@@ -1,168 +1,56 @@
-<!-- =========================================================================================
-    File Name: ChartBubbleChart.vue
-    Description: Create bubble chart
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
-
 <template>
-    <vx-card title="Bubble Chart" class="mb-base" code-toggler>
+  <b-card no-body>
+    <b-card-header>
+      <b-card-title>Bubble Chart</b-card-title>
 
-        <div class="mt-5">
-            <chartjs-component-bubble-chart :height=250 :data="data" :options="options"></chartjs-component-bubble-chart>
-        </div>
+      <!-- status -->
+      <div class="d-flex align-items-center flex-wrap">
+        <h5 class="font-weight-bolder mb-0 mr-1">
+          $ 100,000
+        </h5>
+        <b-badge variant="light-secondary">
+          <feather-icon
+            icon="ArrowDownIcon"
+            class="text-danger"
+            size="18"
+          />
+          <span class="ml-25">20%</span>
+        </b-badge>
+      </div>
+      <!-- status -->
+    </b-card-header>
 
-        <template slot="codeContainer">
-&lt;script&gt;
-import { Bubble } from 'vue-chartjs'
-
-export default {
-  extends: Line,
-  data() {
-    return {
-      data: {
-        labels: &quot;Africa&quot;,
-        datasets: [{
-          label: [&quot;China&quot;],
-          backgroundColor: &quot;rgba(255,221,50,0.2)&quot;,
-          borderColor: &quot;rgba(255,221,50,1)&quot;,
-          data: [{
-            x: 21269017,
-            y: 5.245,
-            r: 15
-          }]
-        }, {
-          label: [&quot;Denmark&quot;],
-          backgroundColor: &quot;rgba(60,186,159,0.2)&quot;,
-          borderColor: &quot;rgba(60,186,159,1)&quot;,
-          data: [{
-            x: 258702,
-            y: 7.526,
-            r: 10
-          }]
-        }, {
-          label: [&quot;Germany&quot;],
-          backgroundColor: &quot;rgba(0,0,0,0.2)&quot;,
-          borderColor: &quot;#000&quot;,
-          data: [{
-            x: 3979083,
-            y: 6.994,
-            r: 15
-          }]
-        }, {
-          label: [&quot;Japan&quot;],
-          backgroundColor: &quot;rgba(193,46,12,0.2)&quot;,
-          borderColor: &quot;rgba(193,46,12,1)&quot;,
-          data: [{
-            x: 4931877,
-            y: 5.921,
-            r: 15
-          }]
-        }]
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'Predicted world population (millions) in 2050'
-        },
-        scales: {
-          yAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: &quot;Happiness&quot;
-            }
-          }],
-          xAxes: [{
-            scaleLabel: {
-              display: true,
-              labelString: &quot;GDP (PPP)&quot;
-            }
-          }]
-        }
-      }
-    }
-  }
-  mounted () {
-    this.renderChart(this.data, this.options)
-  }
-}
-&lt;/script&gt;
-        </template>
-    </vx-card>
+    <!-- chart -->
+    <b-card-body>
+      <chartjs-component-bubble-chart
+        :height="500"
+        :data="chartjsData.bubbleChart.data"
+        :options="chartjsData.bubbleChart.options"
+      />
+    </b-card-body>
+  </b-card>
 </template>
 
 <script>
-import ChartjsComponentBubbleChart from "./charts-components/ChartjsComponentBubbleChart.vue"
+import {
+  BCard, BCardHeader, BCardBody, BCardTitle, BBadge,
+} from 'bootstrap-vue'
+import ChartjsComponentBubbleChart from './charts-components/ChartjsComponentBubbleChart.vue'
+import chartjsData from './chartjsData'
+
 export default {
-    data() {
-        return {
-            data: {
-                labels: "Africa",
-                datasets: [{
-                    label: ["China"],
-                    backgroundColor: "rgba(255,221,50,0.2)",
-                    borderColor: "rgba(255,221,50,1)",
-                    data: [{
-                        x: 21269017,
-                        y: 5.245,
-                        r: 15
-                    }]
-                }, {
-                    label: ["Denmark"],
-                    backgroundColor: "rgba(60,186,159,0.2)",
-                    borderColor: "rgba(60,186,159,1)",
-                    data: [{
-                        x: 258702,
-                        y: 7.526,
-                        r: 10
-                    }]
-                }, {
-                    label: ["Germany"],
-                    backgroundColor: "rgba(0,0,0,0.2)",
-                    borderColor: "#000",
-                    data: [{
-                        x: 3979083,
-                        y: 6.994,
-                        r: 15
-                    }]
-                }, {
-                    label: ["Japan"],
-                    backgroundColor: "rgba(193,46,12,0.2)",
-                    borderColor: "rgba(193,46,12,1)",
-                    data: [{
-                        x: 4931877,
-                        y: 5.921,
-                        r: 15
-                    }]
-                }]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: 'Predicted world population (millions) in 2050'
-                },
-                scales: {
-                    yAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: "Happiness"
-                        }
-                    }],
-                    xAxes: [{
-                        scaleLabel: {
-                            display: true,
-                            labelString: "GDP (PPP)"
-                        }
-                    }]
-                }
-            }
-        }
-    },
-    components: {
-        ChartjsComponentBubbleChart
+  components: {
+    ChartjsComponentBubbleChart,
+    BCard,
+    BBadge,
+    BCardHeader,
+    BCardTitle,
+    BCardBody,
+  },
+  data() {
+    return {
+      chartjsData,
     }
+  },
 }
 </script>

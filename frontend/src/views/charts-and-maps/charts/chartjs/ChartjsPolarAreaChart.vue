@@ -1,76 +1,65 @@
-<!-- =========================================================================================
-    File Name: ChartPolarArea.vue
-    Description: Create polar area chart
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
-
 <template>
-    <vx-card title="Polar Area Chart" class="mb-base" code-toggler>
-
-        <div class="mt-5">
-            <chartjs-component-polar-area-chart :height="250" :data="data" :options="options"></chartjs-component-polar-area-chart>
-        </div>
-
-        <template slot="codeContainer">
-&lt;script&gt;
-import { PolarArea } from 'vue-chartjs'
-
-export default {
-  extends: Line,
-  data() {
-    return {
-      data: {
-        labels: [&quot;Africa&quot;, &quot;Asia&quot;, &quot;Europe&quot;, &quot;Latin America&quot;, &quot;North America&quot;],
-        datasets: [{
-          label: &quot;Population (millions)&quot;,
-          backgroundColor: [&quot;#3e95cd&quot;, &quot;#8e5ea2&quot;, &quot;#3cba9f&quot;, &quot;#e8c3b9&quot;, &quot;#c45850&quot;],
-          data: [2478, 5267, 734, 784, 433]
-        }]
-      },
-      options: {
-        title: {
-          display: true,
-          text: 'Predicted world population (millions) in 2050'
-        }
-      }
-    }
-  }
-  mounted () {
-    this.renderChart(this.data, this.options)
-  }
-}
-&lt;/script&gt;
+  <b-card no-body>
+    <b-card-header>
+      <b-card-title>Average Skills</b-card-title>
+      <!-- dropdown -->
+      <b-dropdown
+        dropright
+        variant="link"
+        toggle-class="p-0"
+        no-caret
+      >
+        <template #button-content>
+          <feather-icon
+            class="text-body"
+            icon="MoreVerticalIcon"
+          />
         </template>
-    </vx-card>
+        <b-dropdown-item>
+          Last 28 Days
+        </b-dropdown-item>
+        <b-dropdown-item>
+          Last Month
+        </b-dropdown-item>
+        <b-dropdown-item>
+          Last Year
+        </b-dropdown-item>
+      </b-dropdown>
+      <!--/ dropdown -->
+    </b-card-header>
+
+    <!-- chart -->
+    <b-card-body>
+      <chartjs-component-polar-area-chart
+        :height="350"
+        :data="chartjsData.polarChart.data"
+        :options="chartjsData.polarChart.options"
+      />
+    </b-card-body>
+  </b-card>
 </template>
 
 <script>
-import ChartjsComponentPolarAreaChart from "./charts-components/ChartjsComponentPolarAreaChart.vue"
+import {
+  BCard, BCardTitle, BCardBody, BCardHeader, BDropdown, BDropdownItem,
+} from 'bootstrap-vue'
+import ChartjsComponentPolarAreaChart from './charts-components/ChartjsComponentPolarAreaChart.vue'
+import chartjsData from './chartjsData'
+
 export default {
-    data() {
-        return {
-            data: {
-                labels: ["Africa", "Asia", "Europe", "Latin America", "North America"],
-                datasets: [{
-                    label: "Population (millions)",
-                    backgroundColor: ["#7367F0", "#28C76F", "#EA5455", "#FF9F43", "#1E1E1E"],
-                    data: [2478, 5267, 734, 784, 433]
-                }]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: 'Predicted world population (millions) in 2050'
-                }
-            }
-        }
-    },
-    components: {
-        ChartjsComponentPolarAreaChart
+  components: {
+    ChartjsComponentPolarAreaChart,
+    BCard,
+    BCardTitle,
+    BCardBody,
+    BCardHeader,
+    BDropdown,
+    BDropdownItem,
+  },
+  data() {
+    return {
+      chartjsData,
     }
+  },
 }
 </script>
