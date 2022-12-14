@@ -1,88 +1,116 @@
-<!-- =========================================================================================
-    File Name: FormValidationSimple.vue
-    Description: Simple form validation
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
-
 <template>
-    <vx-card title="Simple form validation" code-toggler>
+  <b-card-code
+    title="Simple Form Validation"
+  >
+    <b-card-text>
+      <span>To add validation to any input filed just wrap that field in </span>
+      <code>ValidationProvider</code>
+      <span> component. Next, add your validation using </span>
+      <code>rules</code>
+      <span> prop.</span>
+    </b-card-text>
 
-        <p>Simple form validation before submitting form. Add <code>v-validate</code> directive to input.</p>
-        <div class="mt-5">
-            <form>
-                <vs-input v-validate="'required'" placeholder="Input 1" name="input1" v-model="value1" class="mt-5" />
-                <span class="text-danger text-sm" v-show="errors.has('input1')">{{ errors.first('input1') }}</span>
+    <b-card-text>
+      <span>You can get errors of this field using </span>
+      <code>slot.</code>
+    </b-card-text>
 
-                <vs-input v-validate="'required'" placeholder="Input 2" name="input2" v-model="value2" class="mt-5" />
-                <span class="text-danger text-sm" v-show="errors.has('input2')">{{ errors.first('input2') }}</span>
+    <!-- form -->
+    <validation-observer ref="simpleRules">
+      <b-form>
+        <b-row>
+          <b-col md="6">
+            <b-form-group>
+              <validation-provider
+                #default="{ errors }"
+                name="First Name"
+                rules="required"
+              >
+                <b-form-input
+                  v-model="name"
+                  :state="errors.length > 0 ? false:null"
+                  placeholder="First Name"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+          <b-col md="6">
+            <b-form-group>
+              <validation-provider
+                #default="{ errors }"
+                name="Email"
+                rules="required|email"
+              >
+                <b-form-input
+                  v-model="emailValue"
+                  :state="errors.length > 0 ? false:null"
+                  type="email"
+                  placeholder="Email"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+          <b-col cols="12">
+            <b-button
+              variant="primary"
+              type="submit"
+              @click.prevent="validationForm"
+            >
+              Submit
+            </b-button>
+          </b-col>
+        </b-row>
+      </b-form>
+    </validation-observer>
 
-                <vs-button type="filled" @click.prevent="submitForm" class="mt-5 block">Submit</vs-button>
-            </form>
-        </div>
-
-        <template slot="codeContainer">
-&lt;template&gt;
-  &lt;form&gt;
-    &lt;vs-input size=&quot;large&quot; v-validate=&quot;'required'&quot; placeholder=&quot;Input 1&quot; name=&quot;input1&quot; v-model=&quot;value1&quot; class=&quot;mt-5&quot; /&gt;
-    &lt;span class=&quot;text-danger text-sm&quot; v-show=&quot;errors.has('input1')&quot;&gt;{{ "\{\{ errors.first('input1') \}\}" }}&lt;/span&gt;
-
-    &lt;vs-input size=&quot;large&quot; v-validate=&quot;'required'&quot; placeholder=&quot;Input 2&quot; name=&quot;input2&quot; v-model=&quot;value2&quot; class=&quot;mt-5&quot; /&gt;
-    &lt;span class=&quot;text-danger text-sm&quot; v-show=&quot;errors.has('input2')&quot;&gt;{{ "\{\{ errors.first('input2') \}\}" }}&lt;/span&gt;
-
-    &lt;vs-button type=&quot;filled&quot; @click.prevent=&quot;submitForm&quot; class=&quot;mt-5 block&quot;&gt;Submit&lt;/vs-button&gt;
-  &lt;/form&gt;
-&lt;/template&gt;
-
-&lt;script&gt;
-export default {
-  data() {
-    return {
-      value1: &quot;&quot;,
-      value2: &quot;&quot;,
-    }
-  },
-  methods: {
-    submitForm() {
-      this.$validator.validateAll().then(result =&gt; {
-        if(result) {
-          // if form have no errors
-          alert(&quot;form submitted!&quot;);
-        }else{
-          // form have errors
-        }
-      })
-    }
-  },
-}
-&lt;/script&gt;
-        </template>
-    </vx-card>
+    <template #code>
+      {{ codeSimple }}
+    </template>
+  </b-card-code>
 </template>
 
 <script>
+import BCardCode from '@core/components/b-card-code'
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import {
+  BFormInput, BFormGroup, BForm, BRow, BCol, BButton, BCardText,
+} from 'bootstrap-vue'
+import { required, email } from '@validations'
+import { codeSimple } from './code'
 
 export default {
-    data() {
-        return {
-            value1: "",
-            value2: "",
+  components: {
+    BCardCode,
+    ValidationProvider,
+    ValidationObserver,
+    BCardText,
+    BFormInput,
+    BFormGroup,
+    BForm,
+    BRow,
+    BCol,
+    BButton,
+  },
+  data() {
+    return {
+      emailValue: '',
+      name: '',
+      codeSimple,
+      required,
+      email,
+    }
+  },
+  methods: {
+    validationForm() {
+      this.$refs.simpleRules.validate().then(success => {
+        if (success) {
+          // eslint-disable-next-line
+          alert('form submitted!')
         }
+      })
     },
-    methods: {
-        submitForm() {
-            this.$validator.validateAll().then(result => {
-                if(result) {
-                    // if form have no errors
-                    alert("form submitted!");
-                }else{
-                    // form have errors
-                }
-            })
-        }
-    },
+  },
 }
 </script>

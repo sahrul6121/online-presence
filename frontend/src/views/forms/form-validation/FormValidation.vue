@@ -1,45 +1,46 @@
-<!-- =========================================================================================
-    File Name: FormValidation.vue
-    Description: Form validation (third-party) - Imports page portions
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
-    <div id="extra-component-form-validation-demo">
-
-        <p class="mb-4"><a href="https://logaretm.github.io/vee-validate/guide/" target="_blank" rel="nofollow">vee-validate</a> is a Template Based Validation Framework for Vue.js. Read full documentation <a href="https://baianat.github.io/vee-validate/guide/" target="_blank" rel="nofollow">here</a></p>
-
-        <form-validation-simple></form-validation-simple>
-        <form-validation-multiple-rules></form-validation-multiple-rules>
-        <div class="vx-row match-height">
-            <div class="vx-col sm:w-1/2 w-full">
-                <form-validation-custom-error-messages class="mb-base"></form-validation-custom-error-messages>
-            </div>
-            <div class="vx-col sm:w-1/2 w-full">
-                <form-validation-events class="mb-base"></form-validation-events>
-            </div>
-        </div>
-        <form-validation-types></form-validation-types>
-    </div>
+  <b-row>
+    <b-col cols="12">
+      <form-validation-simple />
+      <form-validation-multiple />
+      <b-row>
+        <b-col md="6">
+          <form-validation-placeholder />
+        </b-col>
+        <b-col md="6">
+          <form-validation-placeholder-arguments />
+        </b-col>
+      </b-row>
+      <form-validation-types />
+      <form-validation-locale />
+      <form-validation-extend />
+    </b-col>
+  </b-row>
 </template>
 
 <script>
-import FormValidationSimple from "./FormValidationSimple.vue"
-import FormValidationMultipleRules from "./FormValidationMultipleRules.vue"
-import FormValidationCustomErrorMessages from "./FormValidationCustomErrorMessages.vue"
-import FormValidationEvents from "./FormValidationEvents.vue"
-import FormValidationTypes from "./FormValidationTypes.vue"
+import { BRow, BCol } from 'bootstrap-vue'
+
+import FormValidationSimple from './FormValidationSimple.vue'
+import FormValidationMultiple from './FormValidationMultiple.vue'
+import FormValidationTypes from './FormValidationTypes.vue'
+import FormValidationPlaceholder from './FormValidationPlaceholder.vue'
+import FormValidationPlaceholderArguments from './FormValidationPlaceholderArguments.vue'
+import FormValidationLocale from './FormValidationLocale.vue'
+import FormValidationExtend from './FormValidationExtend.vue'
 
 export default {
-    components: {
-        FormValidationSimple,
-        FormValidationMultipleRules,
-        FormValidationCustomErrorMessages,
-        FormValidationEvents,
-        FormValidationTypes,
-    }
+  components: {
+    BRow,
+    BCol,
+
+    FormValidationSimple,
+    FormValidationMultiple,
+    FormValidationTypes,
+    FormValidationPlaceholder,
+    FormValidationPlaceholderArguments,
+    FormValidationLocale,
+    FormValidationExtend,
+  },
 }
 </script>

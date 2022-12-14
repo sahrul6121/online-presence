@@ -1,33 +1,34 @@
-<!-- =========================================================================================
-    File Name: FormWizard.vue
-    Description: Form Wizard (third-party) - Imports page portions
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
 <template>
-    <div id="extra-component-form-wizard-demo">
-
-        <p class="mb-4"><a href="https://binarcode.github.io/vue-form-wizard/#/" target="_blank" rel="nofollow">vue-form-wizard</a> is a vue based component with no external depenendcies which simplifies tab wizard management and allows you to focus on the functional part of your app rather than wasting time on details.</p>
-
-        <form-wizard-number-tab></form-wizard-number-tab>
-        <form-wizard-icon-tab></form-wizard-icon-tab>
-        <form-wizard-validation></form-wizard-validation>
-    </div>
+  <b-row>
+    <b-col cols="12">
+      <form-wizard-number />
+      <form-wizard-vertical />
+      <form-wizard-icon />
+      <form-wizard-vertical-icon />
+    </b-col>
+  </b-row>
 </template>
 
 <script>
-import FormWizardNumberTab from "./FormWizardNumberTab.vue"
-import FormWizardIconTab from "./FormWizardIconTab.vue"
-import FormWizardValidation from "./FormWizardValidation.vue"
+import { BRow, BCol } from 'bootstrap-vue'
+import FormWizardNumber from './FormWizardNumber.vue'
+import FormWizardIcon from './FormWizardIcon.vue'
+import FormWizardVertical from './FormWizardVertical.vue'
+import FormWizardVerticalIcon from './FormWizardVerticalIcon.vue'
 
 export default {
-    components: {
-        FormWizardNumberTab,
-        FormWizardIconTab,
-        FormWizardValidation,
-    }
+  components: {
+    BRow,
+    BCol,
+    FormWizardNumber,
+    FormWizardIcon,
+    FormWizardVertical,
+    FormWizardVerticalIcon,
+  },
 }
 </script>
+
+<style lang="scss">
+  @import '@core/scss/vue/libs/vue-wizard.scss';
+  @import '@core/scss/vue/libs/vue-select.scss';
+</style>

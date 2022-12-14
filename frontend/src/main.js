@@ -1,129 +1,50 @@
-/*=========================================================================================
-  File Name: main.js
-  Description: main vue(js) file
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
-==========================================================================================*/
-
-
 import Vue from 'vue'
+import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
+import VueCompositionAPI from '@vue/composition-api'
+
+import i18n from '@/libs/i18n'
+import router from './router'
+import store from './store'
 import App from './App.vue'
 
-// Vuesax Component Framework
-import Vuesax from 'vuesax'
-import 'material-icons/iconfont/material-icons.css' //Material Icons
-import 'vuesax/dist/vuesax.css'; // Vuesax
-Vue.use(Vuesax)
+// Global Components
+import './global-components'
 
+// 3rd party plugins
+import '@axios'
+import '@/libs/acl'
+import '@/libs/portal-vue'
+import '@/libs/clipboard'
+import '@/libs/toastification'
+import '@/libs/sweet-alerts'
+import '@/libs/vue-select'
+import '@/libs/tour'
 
-// axios
-import axios from "./axios.js"
-Vue.prototype.$http = axios
+// Axios Mock Adapter
+import '@/@fake-db/db'
 
-// API Calls
-import "./http/requests"
+// BSV Plugin Registration
+Vue.use(ToastPlugin)
+Vue.use(ModalPlugin)
 
-// mock
-import "./fake-db/index.js"
+// Composition API
+Vue.use(VueCompositionAPI)
 
-// Theme Configurations
-import '../themeConfig.js'
+// Feather font icon - For form-wizard
+// * Shall remove it if not using font-icons of feather-icons - For form-wizard
+require('@core/assets/fonts/feather/iconfont.css') // For form-wizard
 
+// import core styles
+require('@core/scss/core.scss')
 
-// Firebase
-import '@/firebase/firebaseConfig'
-
-
-// Auth0 Plugin
-import AuthPlugin from "./plugins/auth";
-Vue.use(AuthPlugin);
-
-
-// ACL
-import acl from './acl/acl'
-
-
-// Globally Registered Components
-import './globalComponents.js'
-
-
-// Styles: SCSS
-import './assets/scss/main.scss'
-
-
-// Tailwind
-import '@/assets/css/main.css'
-
-
-// Vue Router
-import router from './router'
-
-
-// Vuex Store
-import store from './store/store'
-
-
-// i18n
-import i18n from './i18n/i18n'
-
-
-// Vuexy Admin Filters
-import './filters/filters'
-
-
-// Clipboard
-import VueClipboard from 'vue-clipboard2'
-Vue.use(VueClipboard);
-
-
-// Tour
-import VueTour from 'vue-tour'
-Vue.use(VueTour)
-require('vue-tour/dist/vue-tour.css')
-
-
-// VeeValidate
-import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
-
-
-// Google Maps
-import * as VueGoogleMaps from 'vue2-google-maps'
-Vue.use(VueGoogleMaps, {
-    load: {
-        // Add your API key here
-        key: 'YOUR_API_KEY',
-        libraries: 'places', // This is required if you use the Auto complete plug-in
-    },
-})
-
-// Vuejs - Vue wrapper for hammerjs
-import { VueHammer } from 'vue2-hammer'
-Vue.use(VueHammer)
-
-
-// PrismJS
-import 'prismjs'
-import 'prismjs/themes/prism-tomorrow.css'
-
-
-// Feather font icon
-require('./assets/css/iconfont.css')
-
-
-// Vue select css
-// Note: In latest version you have to add it separately
-// import 'vue-select/dist/vue-select.css';
-
+// import assets styles
+require('@/assets/scss/style.scss')
 
 Vue.config.productionTip = false
 
 new Vue({
-    router,
-    store,
-    i18n,
-    acl,
-    render: h => h(App)
+  router,
+  store,
+  i18n,
+  render: h => h(App),
 }).$mount('#app')
