@@ -13,10 +13,15 @@ return new class extends Migration
     */
    public function up()
    {
-      Schema::create('absens', function (Blueprint $table) {
+      Schema::create('attendances', function (Blueprint $table) {
          $table->id();
-         $table->string('status');
-         $table->string('document');
+         $table->unsignedInteger('id_employee');
+         $table->dateTime('check_in');
+         $table->dateTime('check_out')->nullable();
+         $table->string('note')->nullable();
+         $table->string('attachment')->nullable();
+         $table->integer('late_time');
+         $table->softDeletes();
          $table->timestamps();
       });
    }
@@ -28,6 +33,6 @@ return new class extends Migration
     */
    public function down()
    {
-      Schema::dropIfExists('absens');
+      Schema::dropIfExists('attendances');
    }
 };
