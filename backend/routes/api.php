@@ -26,6 +26,15 @@ Route::resource('role', RoleController::class);
 Route::middleware('jwt.verify')
     ->resource('time-sheet-activity', TimeSheetActivityController::class);
 
+Route::prefix('time-sheet-activity')
+    ->middleware('jwt.verify')
+    ->controller(TimeSheetActivityController::class)
+    ->group(function () {
+        Route::post('/approve/{id}', 'approve');
+        Route::post('/reject/{id}', 'reject');
+    });
+
+
 Route::prefix('auth')
     ->controller(AuthController::class)
     ->group(function () {
