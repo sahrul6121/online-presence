@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TimeSheetActivityStatus;
 use App\Http\Requests\TimeSheetActivity\CreateTimeSheetActivityRequest;
 use App\Http\Requests\TimeSheetActivity\UpdateTimeSheetActivityRequest;
 use App\Http\Resources\TimeSheetActivityResource;
 use App\Models\TimeSheetActivity;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Request;
 
 class TimeSheetActivityController extends Controller
@@ -19,8 +22,14 @@ class TimeSheetActivityController extends Controller
      */
     public function index(Request $request)
     {
+        $query = TimeSheetActivity::query();
+
+        if ($request->user_id) {
+            $query->where('user_id', $request->user_id);
+        }
+
         return TimeSheetActivityResource::collection(
-            TimeSheetActivity::query()->paginate($request->perPage ?? 10)
+            $query->paginate($request->perPage ?? 10)
         );
     }
 
@@ -28,11 +37,14 @@ class TimeSheetActivityController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateTimeSheetActivityRequest $request
-     * @return JsonResponse
+     * @return TimeSheetActivityResource
      */
     public function store(CreateTimeSheetActivityRequest $request)
     {
-        $id = TimeSheetActivity::query()->insertGetId($request->validated());
+        $id = TimeSheetActivity::query()->insertGetId([
+            ...$request->validated(),
+            'user_id' => Auth::user()->id,
+        ]);
 
         return new TimeSheetActivityResource($this->show($id));
     }
@@ -72,7 +84,7 @@ class TimeSheetActivityController extends Controller
      * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         $item = TimeSheetActivity::query()->findOrFail($id);
 
@@ -80,6 +92,44 @@ class TimeSheetActivityController extends Controller
 
         return response()->json([
             'message' => 'Delete Success',
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function approve(int $id)
+    {
+        $item = TimeSheetActivity::query()->findOrFail($id);
+
+        $item->update([
+            'status' => TimeSheetActivityStatus::APPROVED
+        ]);
+
+        return response()->json([
+            'message' => 'Approve Success',
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function reject(int $id)
+    {
+        $item = TimeSheetActivity::query()->findOrFail($id);
+
+        $item->update([
+            'status' => TimeSheetActivityStatus::REJECTED
+        ]);
+
+        return response()->json([
+            'message' => 'Reject Success',
         ]);
     }
 }

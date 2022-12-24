@@ -2,7 +2,11 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -46,5 +50,28 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof ModelNotFoundException) {
+            return response()->json([
+                'message' => 'Record not found',
+            ], 404);
+        }
+
+        if ($e instanceof ValidationException) {
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => 'Invalid data',
+                    'errors' => $e->errors(),
+                ], 422)
+            );
+        }
+
+        return response()->json([
+            'message' => 'something wrong',
+            'errors' => $e->getMessage(),
+        ], Response::HTTP_BAD_REQUEST);
     }
 }

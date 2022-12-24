@@ -22,8 +22,8 @@ class TimeSheetActivityResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'status' => $this->status,
-            'start_time' => Carbon::now($this->start_time)->format('YYYY-MM-DD H:i:s'),
-            'end_time' => Carbon::now($this->end_time)->format('YYYY-MM-DD H:i:s'),
+            'start_time' => $this->start_time,
+            'end_time' => $this->end_time,
         ];
     }
 }

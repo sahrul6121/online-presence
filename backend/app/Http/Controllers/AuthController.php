@@ -7,8 +7,8 @@ use App\Http\Requests\Auth\LogoutRequest;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -18,15 +18,20 @@ class AuthController extends Controller
      * Store a newly created resource in storage.
      *
      * @param CreateUserRequest $request
-     * @return JsonResponse
+     * @return JsonResource
      */
-    public function store(CreateUserRequest $request): JsonResponse
+    public function store(CreateUserRequest $request)
     {
         $id = User::query()->insertGetId([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role_id' => $request->role_id,
+            'code' => $request->code,
+            'address' => $request->address,
+            'gender' => $request->gender,
+            'join_date' => $request->join_date,
+            'base_salary' => $request->base_salary,
         ]);
 
         return response()->json([
@@ -35,7 +40,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(LoginRequest $request): JsonResponse
+    public function login(LoginRequest $request)
     {
         try {
             if (! $token = JWTAuth::attempt($request->validated())) {
@@ -63,7 +68,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(LogoutRequest $request): JsonResponse
+    public function logout(LogoutRequest $request)
     {
         try {
             JWTAuth::invalidate($request->get('token'));

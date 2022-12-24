@@ -38,13 +38,11 @@ class CreateTimeSheetActivityRequest extends FormRequest
     {
         return [
 
-            'user_id' => ['required'],
-
             'title' => ['required'],
 
             'description' => ['required'],
 
-            'status' => ['required'],
+            'status' => ['required', 'in:ON_REVIEW,APPROVED,REJECTED'],
 
             'start_time' => ['required'],
 
