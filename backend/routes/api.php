@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimeSheetActivityController;
@@ -33,6 +34,17 @@ Route::prefix('time-sheet-activity')
     ->group(function () {
         Route::post('/approve/{id}', 'approve');
         Route::post('/reject/{id}', 'reject');
+    });
+
+Route::prefix('attendance')
+    ->middleware('jwt.verify')
+    ->controller(AttendanceController::class)
+    ->group(function () {
+        Route::get('/', 'index');
+        Route::post('/tap-in', 'tapIn');
+        Route::post('/tap-out', 'tapOut');
+        Route::post('/current-attendance', 'currentAttendance');
+        Route::get('/{id}', 'show');
     });
 
 Route::middleware('jwt.verify')

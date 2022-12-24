@@ -20,7 +20,7 @@ class AuthController extends Controller
      * @param CreateUserRequest $request
      * @return JsonResource
      */
-    public function store(CreateUserRequest $request): JsonResource
+    public function store(CreateUserRequest $request)
     {
         $id = User::query()->insertGetId([
             'name' => $request->name,
@@ -40,7 +40,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function login(LoginRequest $request): JsonResource
+    public function login(LoginRequest $request)
     {
         try {
             if (! $token = JWTAuth::attempt($request->validated())) {
@@ -68,7 +68,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(LogoutRequest $request): JsonResource
+    public function logout(LogoutRequest $request)
     {
         try {
             JWTAuth::invalidate($request->get('token'));
