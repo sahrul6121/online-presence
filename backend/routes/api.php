@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimeSheetActivityController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,6 +33,16 @@ Route::prefix('time-sheet-activity')
     ->group(function () {
         Route::post('/approve/{id}', 'approve');
         Route::post('/reject/{id}', 'reject');
+    });
+
+Route::middleware('jwt.verify')
+    ->resource('employee', UserController::class);
+
+Route::prefix('employee')
+    ->middleware('jwt.verify')
+    ->controller(UserController::class)
+    ->group(function () {
+        Route::put('/reset-password/{id}', 'resetPassword');
     });
 
 

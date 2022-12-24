@@ -34,7 +34,7 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-
+            
             'name' => ['required'],
 
             'email' => ['required', 'unique:users,email'],
@@ -42,6 +42,16 @@ class CreateUserRequest extends FormRequest
             'password' => ['required'],
 
             'role_id' => ['required'],
+
+            'code' => ['required', 'unique:users,code'],
+
+            'address' => ['required'],
+
+            'gender' => ['required'],
+
+            'join_date' => ['required'],
+
+            'base_salary' => ['required'],
 
         ];
     }
