@@ -13,9 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('pay_rolls', function (Blueprint $table) {
+        Schema::create('roles', function (Blueprint $table) {
+
+            $table->string('name');
+
+            $table->string('code');
+
             $table->id();
+
             $table->timestamps();
+
+            $table->softDeletes();
         });
     }
 
@@ -26,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pay_rolls');
+        Schema::dropIfExists('roles');
     }
 };
