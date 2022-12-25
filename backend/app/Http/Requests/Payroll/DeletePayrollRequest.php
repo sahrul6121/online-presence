@@ -1,18 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Role;
+namespace App\Http\Requests\Payroll;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-/**
- * Class CreateRoleRequest
- * @package App\Http\Requests
- *
- * @property string $name
- * @property string $code
- * @property string $id
- */
-class CreateRoleRequest extends FormRequest
+class DeletePayrollRequest extends FormRequest
 {
    /**
     * Determine if the user is authorized to make this request.
@@ -27,18 +19,12 @@ class CreateRoleRequest extends FormRequest
    /**
     * Get the validation rules that apply to the request.
     *
-    * @return array
+    * @return array<string, mixed>
     */
    public function rules()
    {
       return [
-
-         'name' => [],
-
-         'code' => [],
-
-         'id' => [],
-
+         //
       ];
    }
 }
