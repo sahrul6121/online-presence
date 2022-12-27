@@ -200,6 +200,15 @@ export default [
     component: () => import('@/views/apps/user/users-edit/UsersEdit.vue'),
   },
 
+  // *===============================================---*
+  // *--------- USER ---- ---------------------------------------*
+  // *===============================================---*
+  {
+    path: '/apps/roles/list',
+    name: 'apps-roles-list',
+    component: () => import('@/views/apps/role/roles-list/RolesList.vue'),
+  },
+
   // Invoice
   {
     path: '/apps/invoice/list',
