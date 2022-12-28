@@ -9,7 +9,7 @@ export default {
     fetchTasks(ctx, payload) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/todo/tasks', { params: payload })
+          .get('/time-sheet-activity', { params: payload })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -17,7 +17,7 @@ export default {
     addTask(ctx, taskData) {
       return new Promise((resolve, reject) => {
         axios
-          .post('/apps/todo/tasks', { task: taskData })
+          .post('/time-sheet-activity', { ...taskData })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -25,7 +25,7 @@ export default {
     updateTask(ctx, { task }) {
       return new Promise((resolve, reject) => {
         axios
-          .post(`/apps/todo/tasks/${task.id}`, { task })
+          .post(`/time-sheet-activity/${task.id}`, { ...task })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -33,7 +33,23 @@ export default {
     removeTask(ctx, { id }) {
       return new Promise((resolve, reject) => {
         axios
-          .delete(`/apps/todo/tasks/${id}`)
+          .delete(`/time-sheet-activity/${id}`)
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
+    approveTask(ctx, taskData) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`/time-sheet-activity/approve/${taskData.id}`)
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
+    rejectTask(ctx, taskData) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(`/time-sheet-activity/reject/${taskData.id}`)
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

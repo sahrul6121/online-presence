@@ -39,6 +39,28 @@ export default function useTaskHandler(props, emit) {
     emit('update:is-task-handler-sidebar-active', false)
   }
 
+  const onApproved = () => {
+    const taskData = JSON.parse(JSON.stringify(taskLocal))
+
+    // * If event has id => Edit Event
+    // Emit event for add/update event
+    emit('approve-task', taskData.value)
+
+    // Close sidebar
+    emit('update:is-task-handler-sidebar-active', false)
+  }
+
+  const onRejected = () => {
+    const taskData = JSON.parse(JSON.stringify(taskLocal))
+
+    // * If event has id => Edit Event
+    // Emit event for add/update event
+    emit('reject-task', taskData.value)
+
+    // Close sidebar
+    emit('update:is-task-handler-sidebar-active', false)
+  }
+
   // *===============================================---*
   // *--------- UI ---------------------------------------*
   // *===============================================---*
@@ -84,5 +106,7 @@ export default function useTaskHandler(props, emit) {
     resolveAvatarVariant,
     tagOptions,
     onSubmit,
+    onApproved,
+    onRejected,
   }
 }

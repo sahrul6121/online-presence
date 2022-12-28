@@ -212,9 +212,8 @@
 <script>
 /* eslint-disable global-require */
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
-import VuexyLogo from '@core/layouts/components/Logo.vue'
 import {
-  BRow, BCol, BLink, BFormGroup, BFormInput, BInputGroupAppend, BInputGroup, BFormCheckbox, BCardText, BCardTitle, BImg, BForm, BButton, BAlert, VBTooltip,
+  BRow, BCol, BLink, BFormGroup, BFormInput, BInputGroupAppend, BInputGroup, BFormCheckbox, BCardText, BCardTitle, BImg, BForm, BButton, VBTooltip,
 } from 'bootstrap-vue'
 import useJwt from '@/auth/jwt/useJwt'
 import { required, email } from '@validations'
@@ -242,8 +241,6 @@ export default {
     BImg,
     BForm,
     BButton,
-    BAlert,
-    VuexyLogo,
     ValidationProvider,
     ValidationObserver,
   },
@@ -330,6 +327,17 @@ export default {
             })
             .catch(error => {
               console.log(error)
+
+              this.$toast({
+                component: ToastificationContent,
+                position: 'top-right',
+                props: {
+                  title: 'Error',
+                  icon: 'CoffeeIcon',
+                  variant: 'danger',
+                  text: 'Invalid Credentials',
+                },
+              })
             })
         }
       })

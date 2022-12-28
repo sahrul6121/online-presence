@@ -15,14 +15,27 @@
       <template #default="{ hide }">
         <!-- Header -->
         <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
-          <b-button
-            v-if="taskLocal.id"
-            size="sm"
-            :variant="taskLocal.isCompleted ? 'outline-success' : 'outline-secondary'"
-            @click="taskLocal.isCompleted = !taskLocal.isCompleted"
-          >
-            {{ taskLocal.isCompleted ? 'Completed' : 'Mark Complete' }}
-          </b-button>
+          <div v-if="taskLocal.id">
+            <b-button
+              size="sm"
+              class="mr-2"
+              :disabled="taskLocal.status !== 'ON_REVIEW'"
+              variant="outline-success"
+              @click="onApproved"
+            >
+              {{ taskLocal.status === 'APPROVED' ? 'Approved' : 'Mark Approve' }}
+            </b-button>
+
+            <b-button
+              size="sm"
+              :disabled="taskLocal.status !== 'ON_REVIEW'"
+              variant="outline-danger"
+              @click="onRejected"
+            >
+              {{ taskLocal.status === 'REJECTED' ? 'Rejected' : 'Mark Reject' }}
+            </b-button>
+          </div>
+
           <h5
             v-else
             class="mb-0"
@@ -35,13 +48,6 @@
               icon="TrashIcon"
               class="cursor-pointer"
               @click="$emit('remove-task'); hide();"
-            />
-            <feather-icon
-              class="ml-1 cursor-pointer"
-              icon="StarIcon"
-              size="16"
-              :class="{ 'text-warning': taskLocal.isImportant }"
-              @click="taskLocal.isImportant = !taskLocal.isImportant"
             />
             <feather-icon
               class="ml-1 cursor-pointer"
@@ -90,54 +96,20 @@
               </b-form-group>
             </validation-provider>
 
-            <!-- Assignee -->
-            <b-form-group
-              label="Assignee"
-              label-for="assignee"
-            >
-              <v-select
-                v-model="taskLocal.assignee"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                :options="assigneeOptions"
-                label="fullName"
-                class="assignee-selector"
-                input-id="assignee"
-              >
-
-                <template #option="{ avatar, fullName }">
-                  <b-avatar
-                    size="26"
-                    :src="avatar"
-                  />
-                  <span class="ml-50 d-inline-block align-middle"> {{ fullName }}</span>
-                </template>
-
-                <template #selected-option="{ avatar, fullName }">
-                  <b-avatar
-                    size="26"
-                    :src="avatar"
-                    :variant="`light-${resolveAvatarVariant(taskLocal.tags)}`"
-                    :text="avatarText(fullName)"
-                  />
-
-                  <span class="ml-50 d-inline-block align-middle"> {{ fullName }}</span>
-                </template>
-              </v-select>
-            </b-form-group>
-
-            <!-- due Date -->
+            <!-- start time -->
             <validation-provider
               #default="validationContext"
-              name="Due Date"
+              name="Start Time"
               rules="required"
             >
 
               <b-form-group
-                label="Due Date"
+                label="Start Time"
                 label-for="due-date"
               >
                 <flat-pickr
-                  v-model="taskLocal.dueDate"
+                  v-model="taskLocal.start_time"
+                  :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}"
                   class="form-control"
                 />
                 <b-form-invalid-feedback :state="getValidationState(validationContext)">
@@ -146,21 +118,27 @@
               </b-form-group>
             </validation-provider>
 
-            <!--Tag -->
-            <b-form-group
-              label="Tag"
-              label-for="tag"
+            <!-- end time -->
+            <validation-provider
+              #default="validationContext"
+              name="End Time"
+              rules="required"
             >
-              <v-select
-                v-model="taskLocal.tags"
-                :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                multiple
-                :close-on-select="false"
-                :options="tagOptions"
-                :reduce="option => option.value"
-                input-id="tags"
-              />
-            </b-form-group>
+
+              <b-form-group
+                label="End Time"
+                label-for="due-date"
+              >
+                <flat-pickr
+                  v-model="taskLocal.end_time"
+                  :config="{ enableTime: true,dateFormat: 'Y-m-d H:i'}"
+                  class="form-control"
+                />
+                <b-form-invalid-feedback :state="getValidationState(validationContext)">
+                  {{ validationContext.errors[0] }}
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
             <!-- Description -->
             <b-form-group
@@ -190,6 +168,7 @@
             <div class="d-flex mt-2">
               <b-button
                 v-ripple.400="'rgba(255, 255, 255, 0.15)'"
+                :disabled="taskLocal.status !== 'ON_REVIEW' && !!taskLocal.id"
                 variant="primary"
                 class="mr-2"
                 type="submit"
@@ -213,9 +192,8 @@
 
 <script>
 import {
-  BSidebar, BForm, BFormGroup, BFormInput, BAvatar, BButton, BFormInvalidFeedback,
+  BSidebar, BForm, BFormGroup, BFormInput, BButton, BFormInvalidFeedback,
 } from 'bootstrap-vue'
-import vSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
 import Ripple from 'vue-ripple-directive'
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
@@ -234,11 +212,9 @@ export default {
     BForm,
     BFormGroup,
     BFormInput,
-    BAvatar,
     BFormInvalidFeedback,
 
     // 3rd party packages
-    vSelect,
     flatPickr,
     quillEditor,
 
@@ -284,6 +260,8 @@ export default {
       onSubmit,
       tagOptions,
       resolveAvatarVariant,
+      onApproved,
+      onRejected,
     } = useTaskHandler(toRefs(props), emit)
 
     const {
@@ -306,6 +284,8 @@ export default {
       onSubmit,
       assigneeOptions,
       tagOptions,
+      onApproved,
+      onRejected,
 
       // Form Validation
       resetForm,

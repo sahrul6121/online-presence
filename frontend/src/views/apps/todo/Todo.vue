@@ -37,39 +37,6 @@
             />
           </b-input-group>
         </div>
-
-        <!-- Dropdown -->
-        <div class="dropdown">
-          <b-dropdown
-            variant="link"
-            no-caret
-            toggle-class="p-0 mr-1"
-            right
-          >
-            <template #button-content>
-              <feather-icon
-                icon="MoreVerticalIcon"
-                size="16"
-                class="align-middle text-body"
-              />
-            </template>
-            <b-dropdown-item @click="resetSortAndNavigate">
-              Reset Sort
-            </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'title-asc' } }">
-              Sort A-Z
-            </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'title-desc' } }">
-              Sort Z-A
-            </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'assignee' } }">
-              Sort Assignee
-            </b-dropdown-item>
-            <b-dropdown-item :to="{ name: $route.name, query: { ...$route.query, sort: 'due-date' } }">
-              Sort Due Date
-            </b-dropdown-item>
-          </b-dropdown>
-        </div>
       </div>
 
       <!-- Todo List -->
@@ -97,11 +64,6 @@
             <div class="todo-title-wrapper">
               <div class="todo-title-area">
                 <div class="title-wrapper">
-                  <b-form-checkbox
-                    :checked="task.isCompleted"
-                    @click.native.stop
-                    @change="updateTaskIsCompleted(task)"
-                  />
                   <span class="todo-title">{{ task.title }}</span>
                 </div>
               </div>
@@ -117,7 +79,13 @@
                     {{ tag }}
                   </b-badge>
                 </div>
-                <small class="text-nowrap text-muted mr-1">{{ formatDate(task.dueDate, { month: 'short', day: 'numeric'}) }}</small>
+                <small class="text-nowrap text-muted mr-1">{{ task.start_time }}</small>
+                <small class="text-nowrap text-muted mr-1">{{ task.end_time }}</small>
+                <span
+                  class="bullet bullet-sm mr-1"
+                  :class="`bullet-${getColor(task.status)}`"
+                />
+                <small class="text-nowrap text-muted mr-1">{{ task.user.name }}</small>
                 <b-avatar
                   v-if="task.assignee"
                   size="32"
@@ -157,6 +125,8 @@
       @remove-task="removeTask"
       @add-task="addTask"
       @update-task="updateTask"
+      @approve-task="approveTask"
+      @reject-task="rejectTask"
     />
 
     <!-- Sidebar -->
@@ -177,8 +147,8 @@ import {
   ref, watch, computed, onUnmounted,
 } from '@vue/composition-api'
 import {
-  BFormInput, BInputGroup, BInputGroupPrepend, BDropdown, BDropdownItem,
-  BFormCheckbox, BBadge, BAvatar,
+  BFormInput, BInputGroup, BInputGroupPrepend,
+  BBadge, BAvatar,
 } from 'bootstrap-vue'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import draggable from 'vuedraggable'
@@ -194,9 +164,6 @@ export default {
     BFormInput,
     BInputGroup,
     BInputGroupPrepend,
-    BDropdown,
-    BDropdownItem,
-    BFormCheckbox,
     BBadge,
     BAvatar,
     draggable,
@@ -285,6 +252,20 @@ export default {
           fetchTasks()
         })
     }
+    const approveTask = () => {
+      store.dispatch('app-todo/approveTask', { id: task.value.id })
+        .then(() => {
+          // eslint-disable-next-line no-use-before-define
+          fetchTasks()
+        })
+    }
+    const rejectTask = () => {
+      store.dispatch('app-todo/rejectTask', { id: task.value.id })
+        .then(() => {
+          // eslint-disable-next-line no-use-before-define
+          fetchTasks()
+        })
+    }
 
     const perfectScrollbarSettings = {
       maxScrollbarLength: 150,
@@ -293,11 +274,9 @@ export default {
     const isTaskHandlerSidebarActive = ref(false)
 
     const taskTags = [
-      { title: 'Team', color: 'primary', route: { name: 'apps-todo-tag', params: { tag: 'team' } } },
-      { title: 'Low', color: 'success', route: { name: 'apps-todo-tag', params: { tag: 'low' } } },
-      { title: 'Medium', color: 'warning', route: { name: 'apps-todo-tag', params: { tag: 'medium' } } },
-      { title: 'High', color: 'danger', route: { name: 'apps-todo-tag', params: { tag: 'high' } } },
-      { title: 'Update', color: 'info', route: { name: 'apps-todo-tag', params: { tag: 'update' } } },
+      { title: 'On Review', color: 'primary', route: { name: 'apps-todo-tag', params: { tag: 'ON_REVIEW' } } },
+      { title: 'Approved', color: 'success', route: { name: 'apps-todo-tag', params: { tag: 'APPROVED' } } },
+      { title: 'Rejected', color: 'danger', route: { name: 'apps-todo-tag', params: { tag: 'REJECTED' } } },
     ]
 
     const resolveTagVariant = tag => {
@@ -342,7 +321,7 @@ export default {
         sortBy: sortBy.value,
       })
         .then(response => {
-          tasks.value = response.data
+          tasks.value = response.data.data
         })
     }
 
@@ -368,6 +347,8 @@ export default {
       removeTask,
       addTask,
       updateTask,
+      approveTask,
+      rejectTask,
       clearTaskData,
       taskTags,
       searchQuery,
@@ -394,6 +375,19 @@ export default {
       // Left Sidebar Responsive
       mqShallShowLeftSidebar,
     }
+  },
+  methods: {
+    getColor(status) {
+      if (status === 'ON_REVIEW') {
+        return 'primary'
+      }
+
+      if (status === 'REJECTED') {
+        return 'danger'
+      }
+
+      return 'success'
+    },
   },
 }
 </script>
