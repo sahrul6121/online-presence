@@ -42,8 +42,6 @@ class CreateTimeSheetActivityRequest extends FormRequest
 
             'description' => ['required'],
 
-            'status' => ['required', 'in:ON_REVIEW,APPROVED,REJECTED'],
-
             'start_time' => ['required'],
 
             'end_time' => ['required'],

@@ -3,8 +3,11 @@
 namespace App\Models\ModelBase;
 
 use App\Models\TimeSheetActivity;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -116,5 +119,8 @@ class TimeSheetActivityBase extends Model
         ];
     }
 
+    public function user(): BelongsTo {
+        return $this->belongsTo(User::class);
+    }
 
 }

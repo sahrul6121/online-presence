@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Carbon;
 
 class TimeSheetActivityResource extends JsonResource
 {
@@ -18,7 +17,7 @@ class TimeSheetActivityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'user_id' => $this->user_id,
+            'user' => new UserResource($this->user),
             'title' => $this->title,
             'description' => $this->description,
             'status' => $this->status,
