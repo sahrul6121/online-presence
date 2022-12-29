@@ -8,11 +8,19 @@ use App\Http\Resources\PayrollResource;
 use App\Models\Payroll;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class PayrollController extends Controller
 {
    public function index(Request $request): JsonResource
    {
+      $query = Payroll::query();
+
+      if ($request->user_id) {
+         $query->where('user_id', $request->user_id);
+      }
+
       return PayrollResource::collection(
          Payroll::query()->paginate($request->perPage ?? 10)
       );

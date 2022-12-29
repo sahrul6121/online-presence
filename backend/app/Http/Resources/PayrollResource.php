@@ -16,7 +16,7 @@ class PayrollResource extends JsonResource
    {
       return [
          'id' => $this->id,
-         'user_id' => $this->user_id,
+         'user' => new UserResource($this->user),
          'salary' => $this->salary,
       ];
    }
