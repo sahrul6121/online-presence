@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\WorkSchedule;
+namespace App\Http\Requests\Setting;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteWorkScheduleRequest extends FormRequest
+class CreateSettingRequest extends FormRequest
 {
    /**
     * Determine if the user is authorized to make this request.
@@ -24,7 +24,8 @@ class DeleteWorkScheduleRequest extends FormRequest
    public function rules()
    {
       return [
-         //
+         'code' => [],
+         'value' => []
       ];
    }
 }

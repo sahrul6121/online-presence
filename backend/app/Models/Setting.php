@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkSchedule extends Model
+class Setting extends Model
 {
    use HasFactory;
 
-   protected $table = 'work_schedules';
+   protected $table = 'settings';
 
    /**
     * The primary key for the model.
@@ -34,7 +34,7 @@ class WorkSchedule extends Model
 
    protected $fillable = [
       'id',
-      'clock_in',
-      'clock_out'
+      'code',
+      'value'
    ];
 }

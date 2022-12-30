@@ -13,10 +13,10 @@ return new class extends Migration
     */
    public function up()
    {
-      Schema::create('work_schedules', function (Blueprint $table) {
+      Schema::create('settings', function (Blueprint $table) {
          $table->id();
-         $table->time('clock_in');
-         $table->time('clock_out');
+         $table->string('code')->nullable();
+         $table->string('value')->nullable();
          $table->timestamps();
       });
    }
@@ -28,6 +28,6 @@ return new class extends Migration
     */
    public function down()
    {
-      Schema::dropIfExists('work_schedules');
+      Schema::dropIfExists('settings');
    }
 };
