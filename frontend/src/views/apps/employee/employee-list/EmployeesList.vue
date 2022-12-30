@@ -9,6 +9,13 @@
       @refetch-data="refetchData"
     />
 
+    <employee-list-reset-password
+      :is-reset-password-employee-sidebar-active.sync="isResetPasswordEmployeeSidebarActive"
+      :employee-options="employeeOptions"
+      :employee="currentEmployee"
+      @refetch-data="refetchData"
+    />
+
     <employee-list-edit
       :is-edit-employee-sidebar-active.sync="isEditEmployeeSidebarActive"
       :employee="currentEmployee"
@@ -109,6 +116,11 @@
               <span class="align-middle ml-50">Edit</span>
             </b-dropdown-item>
 
+            <b-dropdown-item @click="onResetPassword(data.item)">
+              <feather-icon icon="RefreshCcwIcon" />
+              <span class="align-middle ml-50">Reset Password</span>
+            </b-dropdown-item>
+
             <b-dropdown-item @click="onDelete(data.item.id)">
               <feather-icon icon="TrashIcon" />
               <span class="align-middle ml-50">Delete</span>
@@ -181,12 +193,14 @@ import useEmployeesList from './useEmployeesList'
 import employeeStoreModule from '../employeeStoreModule'
 import EmployeeListAddNew from './EmployeeListAddNew.vue'
 import EmployeeListEdit from './EmployeeListEdit.vue'
+import EmployeeListResetPassword from './EmployeeListResetPassword.vue'
 
 export default {
   components: {
     // EmployeesListFilters,
     EmployeeListAddNew,
     EmployeeListEdit,
+    EmployeeListResetPassword,
 
     BCard,
     BRow,
@@ -224,6 +238,8 @@ export default {
     const isAddNewEmployeeSidebarActive = ref(false)
 
     const isEditEmployeeSidebarActive = ref(false)
+
+    const isResetPasswordEmployeeSidebarActive = ref(false)
 
     const employeeOptions = [
       { label: 'Admin', value: 'admin' },
@@ -284,6 +300,7 @@ export default {
 
       // Sidebar
       isAddNewEmployeeSidebarActive,
+      isResetPasswordEmployeeSidebarActive,
 
       fetchEmployees,
       tableColumns,
@@ -334,6 +351,12 @@ export default {
       this.currentEmployee = employee
 
       this.isEditEmployeeSidebarActive = true
+    },
+
+    onResetPassword(employee) {
+      this.currentEmployee = employee
+
+      this.isResetPasswordEmployeeSidebarActive = true
     },
   },
 }

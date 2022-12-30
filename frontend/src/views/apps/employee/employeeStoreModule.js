@@ -38,6 +38,14 @@ export default {
           .catch(error => reject(error))
       })
     },
+    resetPassword(ctx, employee) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(`/employee/reset-password/${employee.id}`, { ...employee })
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
     fetchRoleList() {
       return new Promise((resolve, reject) => {
         axios
