@@ -141,28 +141,38 @@
             </validation-provider>
 
             <!-- Description -->
-            <b-form-group
-              label="Description"
-              label-for="task-description"
+            <validation-provider
+              #default="validationContext"
+              name="Description"
+              rules="required"
             >
-              <quill-editor
-                id="quil-content"
-                v-model="taskLocal.description"
-                :options="editorOption"
-                class="border-bottom-0"
-              />
-              <div
-                id="quill-toolbar"
-                class="d-flex justify-content-end border-top-0"
+              <b-form-group
+                label="Description"
+                label-for="task-description"
               >
-                <!-- Add a bold button -->
-                <button class="ql-bold" />
-                <button class="ql-italic" />
-                <button class="ql-underline" />
-                <button class="ql-align" />
-                <button class="ql-link" />
-              </div>
-            </b-form-group>
+                <quill-editor
+                  id="quil-content"
+                  v-model="taskLocal.description"
+                  :options="editorOption"
+                  class="border-bottom-0"
+                />
+                <div
+                  id="quill-toolbar"
+                  class="d-flex justify-content-end border-top-0"
+                >
+                  <!-- Add a bold button -->
+                  <button class="ql-bold" />
+                  <button class="ql-italic" />
+                  <button class="ql-underline" />
+                  <button class="ql-align" />
+                  <button class="ql-link" />
+                </div>
+
+                <b-form-invalid-feedback :state="getValidationState(validationContext)">
+                  {{ validationContext.errors[0] }}
+                </b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
             <!-- Form Actions -->
             <div class="d-flex mt-2">

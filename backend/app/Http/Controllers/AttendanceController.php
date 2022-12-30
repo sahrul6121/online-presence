@@ -25,7 +25,7 @@ class AttendanceController extends Controller
     {
         $query = Attendance::query();
 
-        if ($request->user_id) {
+        if (Auth::user()->role->code !== 'HRD') {
             $query->where('user_id', $request->user_id);
         }
 
@@ -42,7 +42,7 @@ class AttendanceController extends Controller
      */
     public function tapIn(CreateAttendanceRequest $request)
     {
-        if ($this->getAttendanceQuery()) {
+        if ($this->getCurrentAttendanceQuery($request->type)) {
             return response()->json([
                 'message' => 'Already tap in',
                 'data' => null,
@@ -55,6 +55,7 @@ class AttendanceController extends Controller
             ...$request->validated(),
             'user_id' => Auth::user()->id,
             'date_in' => Carbon::now(),
+            'status' => (int) Carbon::now()->format('H') <= 8 ? 'ON_TIME' : 'LATE'
         ]);
 
         $item->save();
@@ -71,7 +72,7 @@ class AttendanceController extends Controller
      */
     public function tapOut()
     {
-        $result = $this->getAttendanceQuery();
+        $result = $this->getCurrentAttendanceQuery(null, true);
 
         if (!$result) {
             return response()->json([
@@ -109,11 +110,16 @@ class AttendanceController extends Controller
      */
     public function currentAttendance()
     {
-        return new AttendanceResource($this->getAttendanceQuery());
+        return new AttendanceResource($this->getCurrentAttendanceQuery());
     }
 
-    public function getAttendanceQuery() {
-        return Attendance::query()
+    public function getCurrentAttendanceQuery(string $type = null, bool $isOut = null) {
+        $query = Attendance::query()
+            ->where(
+                'date_in',
+                '>=',
+                Carbon::now()->startOfDay()
+            )
             ->where(
                 'date_in',
                 '<=',
@@ -122,6 +128,16 @@ class AttendanceController extends Controller
             ->where(
                 'user_id',
                 Auth::user()->id
-            )->first();
+            );
+
+        if ($isOut) {
+            $query->where('date_out', null);
+        }
+
+        if ($type) {
+            $query->where('type', $type);
+        }
+
+        return $query->latest()->first();
     }
 }

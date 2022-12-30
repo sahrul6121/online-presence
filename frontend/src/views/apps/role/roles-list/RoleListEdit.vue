@@ -8,7 +8,7 @@
     backdrop
     no-header
     right
-    @hidden="resetForm"
+    @hidden="resetForm; roleData = null"
     @change="(val) => $emit('update:is-edit-role-sidebar-active', val)"
   >
     <template #default="{ hide }">
