@@ -26,6 +26,19 @@ class RoleController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return JsonResource
+     */
+    public function list(Request $request): JsonResource
+    {
+        return RoleResource::collection(
+            Role::query()->get()
+        );
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param CreateRoleRequest $request

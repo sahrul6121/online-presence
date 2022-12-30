@@ -18,7 +18,7 @@ class UserController extends Controller
      * @param Request $request
      * @return JsonResource
      */
-    public function index(Request $request): JsonResource
+    public function index(Request $request)
     {
         return UserResource::collection(
             User::query()->paginate($request->perPage ?? 10)
@@ -31,7 +31,7 @@ class UserController extends Controller
      * @param CreateUserRequest $request
      * @return JsonResource
      */
-    public function store(CreateUserRequest $request): JsonResource
+    public function store(CreateUserRequest $request)
     {
         $id = User::query()->insertGetId([
             'name' => $request->name,
@@ -57,7 +57,7 @@ class UserController extends Controller
      * @param int $id
      * @return JsonResource
      */
-    public function show(int $id): JsonResource
+    public function show(int $id)
     {
         $item = User::query()->findOrFail($id);
 
@@ -71,7 +71,7 @@ class UserController extends Controller
      * @param UpdateUserRequest $request
      * @return JsonResource
      */
-    public function update(int $id, UpdateUserRequest $request): JsonResource
+    public function update(int $id, UpdateUserRequest $request)
     {
         $item = User::query()->findOrFail($id);
 
@@ -96,7 +96,7 @@ class UserController extends Controller
      * @param UpdateUserRequest $request
      * @return JsonResource
      */
-    public function resetPassword(int $id, Request $request): JsonResource
+    public function resetPassword(int $id, Request $request)
     {
         $item = User::query()->findOrFail($id);
 

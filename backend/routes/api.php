@@ -25,6 +25,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
    return $request->user();
 });
 
+Route::get('role/list', [RoleController::class, 'list']);
+
 Route::resource('role', RoleController::class);
 
 Route::middleware('jwt.verify')
