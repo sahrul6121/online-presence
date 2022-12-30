@@ -37,4 +37,18 @@ class Payroll extends Model
       'user_id',
       'salary'
    ];
+
+   public static function keys(): array
+   {
+      return [
+         'id',
+         'user_id',
+         'salary'
+      ];
+   }
+
+   public function user()
+   {
+      return $this->hasOne(User::class, 'id', 'user_id');
+   }
 }
