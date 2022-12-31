@@ -9,7 +9,7 @@ export default {
     fetchInvoices(ctx, queryParams) {
       return new Promise((resolve, reject) => {
         axios
-          .get('/apps/invoice/invoices', { params: queryParams })
+          .get('/payroll', { params: queryParams })
           .then(response => resolve(response))
           .catch(error => reject(error))
       })
@@ -17,7 +17,26 @@ export default {
     fetchInvoice(ctx, { id }) {
       return new Promise((resolve, reject) => {
         axios
-          .get(`/apps/invoice/invoices/${id}`)
+          .get(`/payroll/${id}`)
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
+    updateInvoice(ctx, data) {
+      return new Promise((resolve, reject) => {
+        axios
+          .put(`/payroll/${data.id}`, {
+            ...data,
+            user_id: data.user.id,
+          })
+          .then(response => resolve(response))
+          .catch(error => reject(error))
+      })
+    },
+    generateInvoice() {
+      return new Promise((resolve, reject) => {
+        axios
+          .post('/payroll')
           .then(response => resolve(response))
           .catch(error => reject(error))
       })

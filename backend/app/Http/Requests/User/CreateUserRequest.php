@@ -34,7 +34,7 @@ class CreateUserRequest extends FormRequest
     public function rules()
     {
         return [
-            
+
             'name' => ['required'],
 
             'email' => ['required', 'unique:users,email'],
@@ -52,6 +52,10 @@ class CreateUserRequest extends FormRequest
             'join_date' => ['required'],
 
             'base_salary' => ['required'],
+
+            'bank' => ['required'],
+
+            'bank_account' => ['required'],
 
         ];
     }

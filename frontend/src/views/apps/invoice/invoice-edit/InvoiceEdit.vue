@@ -46,18 +46,18 @@
                   <div class="logo-wrapper">
                     <logo />
                     <h3 class="text-primary invoice-logo">
-                      Vuexy
+                      E-Presence
                     </h3>
                   </div>
-                  <b-card-text class="mb-25">
-                    Office 149, 450 South Brand Brooklyn
-                  </b-card-text>
-                  <b-card-text class="mb-25">
-                    San Diego County, CA 91905, USA
-                  </b-card-text>
-                  <b-card-text class="mb-0">
-                    +1 (123) 456 7891, +44 (876) 543 2198
-                  </b-card-text>
+                  <p class="card-text mb-25">
+                    {{ invoiceData.company }}
+                  </p>
+                  <p class="card-text mb-25">
+                    {{ invoiceData.company_address }}
+                  </p>
+                  <p class="card-text mb-0">
+                    {{ invoiceData.company_phone }}
+                  </p>
                 </div>
 
                 <!-- Header: Right Content -->
@@ -82,16 +82,7 @@
                       Date:
                     </span>
                     <flat-pickr
-                      v-model="invoiceData.issuedDate"
-                      class="form-control invoice-edit-input"
-                    />
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <span class="title">
-                      Due Date:
-                    </span>
-                    <flat-pickr
-                      v-model="invoiceData.dueDate"
+                      v-model="invoiceData.date"
                       class="form-control invoice-edit-input"
                     />
                   </div>
@@ -120,23 +111,20 @@
 
                   <!-- Selected Client -->
                   <div
-                    v-if="invoiceData.client"
+                    v-if="invoiceData.user"
                     class="mt-1"
                   >
                     <h6 class="mb-25">
-                      {{ invoiceData.client.name }}
+                      {{ invoiceData.user.name }}
                     </h6>
                     <b-card-text class="mb-25">
-                      {{ invoiceData.client.company }}
+                      {{ invoiceData.company }}
                     </b-card-text>
                     <b-card-text class="mb-25">
-                      {{ invoiceData.client.address }}, {{ invoiceData.client.country }}
+                      {{ invoiceData.user.address }}, {{ invoiceData.country }}
                     </b-card-text>
                     <b-card-text class="mb-25">
-                      {{ invoiceData.client.contact }}
-                    </b-card-text>
-                    <b-card-text class="mb-0">
-                      {{ invoiceData.client.companyEmail }}
+                      {{ invoiceData.user.email }}
                     </b-card-text>
                   </div>
                 </b-col>
@@ -155,33 +143,27 @@
                       <tbody>
                         <tr>
                           <td class="pr-1">
-                            Total Due:
+                            Sub Total:
                           </td>
-                          <td><span class="font-weight-bold">$12,110.55</span></td>
+                          <td><span class="font-weight-bold">{{ invoiceData.sub_total }}</span></td>
                         </tr>
                         <tr>
                           <td class="pr-1">
                             Bank name:
                           </td>
-                          <td>American Bank</td>
+                          <td>{{ invoiceData.bank }}</td>
                         </tr>
                         <tr>
                           <td class="pr-1">
                             Country:
                           </td>
-                          <td>United States</td>
+                          <td>{{ invoiceData.country }}</td>
                         </tr>
                         <tr>
                           <td class="pr-1">
-                            IBAN:
+                            Account:
                           </td>
-                          <td>ETD95476213874685</td>
-                        </tr>
-                        <tr>
-                          <td class="pr-1">
-                            SWIFT code:
-                          </td>
-                          <td>BR91905</td>
+                          <td>{{ invoiceData.bank_account }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -214,27 +196,33 @@
                         <!-- Single Item Form Headers -->
                         <b-col
                           cols="12"
-                          lg="5"
+                          lg="3"
                         >
-                          Item
+                          Subject
                         </b-col>
                         <b-col
                           cols="12"
                           lg="3"
                         >
-                          Cost
+                          Rate
                         </b-col>
                         <b-col
                           cols="12"
                           lg="2"
                         >
-                          Qty
+                          Day
                         </b-col>
                         <b-col
                           cols="12"
                           lg="2"
                         >
-                          Price
+                          Hour
+                        </b-col>
+                        <b-col
+                          cols="12"
+                          lg="2"
+                        >
+                          Total
                         </b-col>
                       </b-row>
                       <div class="form-item-action-col" />
@@ -247,27 +235,21 @@
                         <!-- Single Item Form Headers -->
                         <b-col
                           cols="12"
-                          lg="5"
+                          lg="3"
                         >
-                          <label class="d-inline d-lg-none">Item</label>
-                          <v-select
-                            v-model="item.itemTitle"
-                            :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                            :options="itemsOptions"
-                            label="itemTitle"
-                            :clearable="false"
-                            class="mb-2 item-selector-title"
-                            placeholder="Select Item"
-                            @input="val => updateItemForm(index, val)"
+                          <label class="d-inline d-lg-none">Subject</label>
+                          <b-form-input
+                            v-model="item.subject"
+                            class="mb-2"
                           />
                         </b-col>
                         <b-col
                           cols="12"
                           lg="3"
                         >
-                          <label class="d-inline d-lg-none">Cost</label>
+                          <label class="d-inline d-lg-none">Rate</label>
                           <b-form-input
-                            v-model="item.cost"
+                            v-model="item.rate"
                             type="number"
                             class="mb-2"
                           />
@@ -276,9 +258,9 @@
                           cols="12"
                           lg="2"
                         >
-                          <label class="d-inline d-lg-none">Qty</label>
+                          <label class="d-inline d-lg-none">Day</label>
                           <b-form-input
-                            v-model="item.qty"
+                            v-model="item.day"
                             type="number"
                             class="mb-2"
                           />
@@ -287,10 +269,23 @@
                           cols="12"
                           lg="2"
                         >
-                          <label class="d-inline d-lg-none">Price</label>
-                          <p class="mb-1">
-                            ${{ item.cost * item.qty }}
-                          </p>
+                          <label class="d-inline d-lg-none">Hour</label>
+                          <b-form-input
+                            v-model="item.hour"
+                            type="number"
+                            class="mb-2"
+                          />
+                        </b-col>
+                        <b-col
+                          cols="12"
+                          lg="2"
+                        >
+                          <label class="d-inline d-lg-none">Total</label>
+                          <b-form-input
+                            v-model="item.total"
+                            type="number"
+                            class="mb-2"
+                          />
                         </b-col>
                         <b-col
                           cols="12"
@@ -302,11 +297,6 @@
                             class="mb-2 mb-lg-0"
                           />
                         </b-col>
-                        <b-col>
-                          <p class="mb-0">
-                            Discount: 0% 0% 0%
-                          </p>
-                        </b-col>
                       </b-row>
                       <div class="d-flex flex-column justify-content-between border-left py-50 px-25">
                         <feather-icon
@@ -315,89 +305,6 @@
                           class="cursor-pointer"
                           @click="removeItem(index)"
                         />
-                        <feather-icon
-                          :id="`form-item-settings-icon-${index}`"
-                          size="16"
-                          icon="SettingsIcon"
-                          class="cursor-pointer"
-                        />
-
-                        <!-- Setting Item Form -->
-                        <b-popover
-                          :ref="`form-item-settings-popover-${index}`"
-                          :target="`form-item-settings-icon-${index}`"
-                          triggers="click"
-                          placement="lefttop"
-                        >
-                          <b-form @submit.prevent>
-                            <b-row>
-
-                              <!-- Field: Discount -->
-                              <b-col cols="12">
-                                <b-form-group
-                                  label="Discount(%)"
-                                  :label-for="`setting-item-${index}-discount`"
-                                >
-                                  <b-form-input
-                                    :id="`setting-item-${index}-discount`"
-                                    :value="null"
-                                    type="number"
-                                  />
-                                </b-form-group>
-                              </b-col>
-
-                              <!-- Field: Tax 1 -->
-                              <b-col cols="6">
-                                <b-form-group
-                                  label="Tax 1"
-                                  :label-for="`setting-item-${index}-tax-1`"
-                                >
-                                  <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                    :value="'10%'"
-                                    :options="['0%', '1%', '10%', '14%', '18%']"
-                                    :input-id="`setting-item-${index}-tax-1`"
-                                    :clearable="false"
-                                  />
-                                </b-form-group>
-                              </b-col>
-
-                              <!-- Field: Tax 2 -->
-                              <b-col cols="6">
-                                <b-form-group
-                                  label="Tax 2"
-                                  :label-for="`setting-item-${index}-tax-2`"
-                                >
-                                  <v-select
-                                    :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                                    :value="'10%'"
-                                    :options="['0%', '1%', '10%', '14%', '18%']"
-                                    :input-id="`setting-item-${index}-tax-2`"
-                                    :clearable="false"
-                                  />
-                                </b-form-group>
-                              </b-col>
-
-                              <b-col
-                                cols="12"
-                                class="d-flex justify-content-between mt-1"
-                              >
-                                <b-button
-                                  variant="outline-primary"
-                                  @click="() => {$refs[`form-item-settings-popover-${index}`][0].$emit('close')}"
-                                >
-                                  Apply
-                                </b-button>
-                                <b-button
-                                  variant="outline-secondary"
-                                  @click="() => {$refs[`form-item-settings-popover-${index}`][0].$emit('close')}"
-                                >
-                                  Cancel
-                                </b-button>
-                              </b-col>
-                            </b-row>
-                          </b-form>
-                        </b-popover>
                       </div>
                     </div>
                   </b-col>
@@ -413,84 +320,9 @@
               </b-button>
             </b-card-body>
 
-            <!-- Invoice Description: Total -->
-            <b-card-body class="invoice-padding pb-0">
-              <b-row>
-
-                <!-- Col: Sales Persion -->
-                <b-col
-                  cols="12"
-                  md="6"
-                  class="mt-md-0 mt-3 d-flex align-items-center"
-                  order="2"
-                  order-md="1"
-                >
-                  <label
-                    for="invoice-data-sales-person"
-                    class="text-nowrap mr-50"
-                  >Sales Person:</label>
-                  <b-form-input
-                    id="invoice-data-sales-person"
-                    v-model="invoiceData.salesPerson"
-                    placeholder="Edward Crowley"
-                  />
-                </b-col>
-
-                <!-- Col: Total -->
-                <b-col
-                  cols="12"
-                  md="6"
-                  class="mt-md-6 d-flex justify-content-end"
-                  order="1"
-                  order-md="2"
-                >
-                  <div class="invoice-total-wrapper">
-                    <div class="invoice-total-item">
-                      <p class="invoice-total-title">
-                        Subtotal:
-                      </p>
-                      <p class="invoice-total-amount">
-                        $1800
-                      </p>
-                    </div>
-                    <div class="invoice-total-item">
-                      <p class="invoice-total-title">
-                        Discount:
-                      </p>
-                      <p class="invoice-total-amount">
-                        $28
-                      </p>
-                    </div>
-                    <div class="invoice-total-item">
-                      <p class="invoice-total-title">
-                        Tax:
-                      </p>
-                      <p class="invoice-total-amount">
-                        21%
-                      </p>
-                    </div>
-                    <hr class="my-50">
-                    <div class="invoice-total-item">
-                      <p class="invoice-total-title">
-                        Total:
-                      </p>
-                      <p class="invoice-total-amount">
-                        $1690
-                      </p>
-                    </div>
-                  </div>
-                </b-col>
-              </b-row>
-            </b-card-body>
-
             <!-- Spacer -->
             <hr class="invoice-spacing">
 
-            <!-- Note -->
-            <b-card-body class="invoice-padding pt-0">
-              <span class="font-weight-bold">Note: </span>
-              <b-form-textarea v-model="invoiceData.note" />
-            </b-card-body>
           </b-card>
         </b-form>
       </b-col>
@@ -506,95 +338,26 @@
         <!-- Action Buttons -->
         <b-card>
 
-          <!-- Button: Send Invoice -->
-          <b-button
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-            v-b-toggle.sidebar-send-invoice
-            variant="primary"
-            class="mb-75"
-            block
-          >
-            Send Invoice
-          </b-button>
-
-          <!-- Button: DOwnload -->
-          <b-button
-            v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-            variant="outline-primary"
-            class="mb-75"
-            block
-          >
-            Preview
-          </b-button>
-
           <!-- Button: Print -->
           <b-button
             v-ripple.400="'rgba(113, 102, 240, 0.15)'"
             variant="outline-primary"
             block
+            @click="save"
           >
             Save
           </b-button>
 
-          <!-- Button: Add Payment -->
+          <!-- Button: Print -->
           <b-button
-            v-b-toggle.sidebar-invoice-add-payment
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-            variant="success"
-            class="mb-75"
+            v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+            variant="outline-danger"
             block
+            @click="backToList"
           >
-            Add Payment
+            Cancel
           </b-button>
         </b-card>
-
-        <!-- Payment Method -->
-        <div class="mt-2">
-          <b-form-group
-            label="Accept Payment Via"
-            label-for="payment-method"
-          >
-            <v-select
-              v-model="invoiceData.paymentMethod"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-              :options="paymentMethods"
-              input-id="payment-method"
-              class="payment-selector"
-              :clearable="false"
-            />
-          </b-form-group>
-
-          <!-- ? Below values are not adding invoiceData to keep invoiceData more generic and less confusing  -->
-
-          <!-- Payment Terms -->
-          <div class="d-flex justify-content-between align-items-center">
-            <label for="patymentTerms">Payment Terms</label>
-            <b-form-checkbox
-              id="patymentTerms"
-              :checked="true"
-              switch
-            />
-          </div>
-
-          <!-- Client Notes -->
-          <div class="d-flex justify-content-between align-items-center my-1">
-            <label for="clientNotes">Client Notes</label>
-            <b-form-checkbox
-              id="clientNotes"
-              :checked="true"
-              switch
-            />
-          </div>
-
-          <!-- Payment Stub -->
-          <div class="d-flex justify-content-between align-items-center">
-            <label for="paymentStub">Payment Stub</label>
-            <b-form-checkbox
-              id="paymentStub"
-              switch
-            />
-          </div>
-        </div>
       </b-col>
     </b-row>
 
@@ -611,9 +374,8 @@ import Ripple from 'vue-ripple-directive'
 import store from '@/store'
 import router from '@/router'
 import {
-  BRow, BCol, BCard, BCardBody, BButton, BCardText, BForm, BFormGroup, BFormInput, BInputGroup, BInputGroupPrepend, BFormTextarea, BFormCheckbox, BPopover, BAlert, BLink, VBToggle,
+  BRow, BCol, BCard, BCardBody, BButton, BCardText, BForm, BFormInput, BInputGroup, BInputGroupPrepend, BFormTextarea, BAlert, BLink, VBToggle,
 } from 'bootstrap-vue'
-import vSelect from 'vue-select'
 import flatPickr from 'vue-flatpickr-component'
 import invoiceStoreModule from '../invoiceStoreModule'
 import InvoiceSidebarSendInvoice from '../InvoiceSidebarSendInvoice.vue'
@@ -628,17 +390,13 @@ export default {
     BButton,
     BCardText,
     BForm,
-    BFormGroup,
     BFormInput,
     BInputGroup,
     BInputGroupPrepend,
     BFormTextarea,
-    BFormCheckbox,
-    BPopover,
     BAlert,
     BLink,
     flatPickr,
-    vSelect,
     Logo,
     InvoiceSidebarSendInvoice,
     InvoiceSidebarAddPayment,
@@ -687,6 +445,16 @@ export default {
         this.trSetHeight(this.$refs.form ? this.$refs.form.scrollHeight : 0)
       })
     },
+    save() {
+      console.log(this.invoiceData)
+      store.dispatch('app-invoice/updateInvoice', this.invoiceData)
+        .then(() => {
+          this.$router.push({ name: 'apps-invoice-list' })
+        })
+    },
+    backToList() {
+      this.$router.push({ name: 'apps-invoice-list' })
+    },
   },
   setup() {
     const INVOICE_APP_STORE_MODULE_NAME = 'app-invoice'
@@ -704,18 +472,13 @@ export default {
 
     store.dispatch('app-invoice/fetchInvoice', { id: router.currentRoute.params.id })
       .then(response => {
-        invoiceData.value = response.data.invoice
-        paymentDetails.value = response.data.paymentDetails
+        invoiceData.value = response.data.data
+        paymentDetails.value = null
 
         // ? We are adding some extra data in response for data purpose
         // * Your response will contain this extra data
         // ? [Purpose is to make it more API friendly and less static as possible]
-        invoiceData.value.items = [{
-          itemTitle: 'App Design',
-          cost: 24,
-          qty: 2,
-          description: 'Designed UI kit & app pages.',
-        }]
+        invoiceData.value.items = response.data.data.items
         invoiceData.value.note = 'It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!'
         invoiceData.value.paymentMethod = 'Bank Account'
       })

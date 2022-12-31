@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Payroll;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UpdatePayrollRequest extends FormRequest
 {
@@ -24,9 +25,32 @@ class UpdatePayrollRequest extends FormRequest
    public function rules()
    {
       return [
-         'id' => [],
-         'user_id' => [],
-         'salary' => []
+          'id' => ['required'],
+          'user_id' => ['required'],
+          'date' => ['required'],
+          'sub_total' => ['required'],
+          'tax' => ['required'],
+          'total' => ['required'],
+          'company' => ['required'],
+          'company_address' => ['required'],
+          'company_phone' => ['required'],
+          'bank' => ['required'],
+          'bank_account' => ['required'],
+          'country' => ['required'],
+          'items' => ['required']
       ];
    }
+
+    /**
+     * @throws HttpResponseException
+     */
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'message' => 'Invalid data',
+                'errors' => $validator->errors()
+            ], 422)
+        );
+    }
 }

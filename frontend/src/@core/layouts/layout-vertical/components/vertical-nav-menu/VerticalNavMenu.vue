@@ -31,7 +31,7 @@
                 />
               </span>
               <h2 class="brand-text">
-                {{ appName }}
+                E-Presence
               </h2>
             </b-link>
           </li>

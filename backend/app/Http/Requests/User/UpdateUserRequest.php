@@ -49,6 +49,10 @@ class UpdateUserRequest extends FormRequest
             'join_date' => ['required'],
 
             'base_salary' => ['required'],
+
+            'bank' => ['required'],
+
+            'bank_account' => ['required'],
         ];
     }
 

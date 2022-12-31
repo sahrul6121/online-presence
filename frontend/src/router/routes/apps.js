@@ -220,14 +220,14 @@ export default [
     name: 'apps-invoice-edit',
     component: () => import('@/views/apps/invoice/invoice-edit/InvoiceEdit.vue'),
   },
-   // *===============================================---*
-   // *--------- SETTING ---- ---------------------------------------*
-   // *===============================================---*
-   {
-      path: '/apps/settings',
-      name: 'apps-settings',
-      component: () => import('@/views/apps/setting/Setting.vue'),
-   },
+  // *===============================================---*
+  // *--------- SETTING ---- ---------------------------------------*
+  // *===============================================---*
+  {
+    path: '/apps/settings',
+    name: 'apps-settings',
+    component: () => import('@/views/apps/setting/Setting.vue'),
+  },
   {
     path: '/apps/presence',
     name: 'apps-presence',

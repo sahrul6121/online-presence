@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticated;
 use Illuminate\Notifications\Notifiable;
@@ -29,6 +30,8 @@ class User extends Authenticated implements JWTSubject
         'gender',
         'join_date',
         'base_salary',
+        'bank',
+        'bank_account',
     ];
 
     /**
@@ -72,5 +75,9 @@ class User extends Authenticated implements JWTSubject
 
     public function role(): HasOne {
         return $this->hasOne(Role::class, 'id');
+    }
+
+    public function payrolls(): HasMany {
+        return $this->hasMany(Payroll::class);
     }
 }
