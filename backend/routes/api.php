@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OnLeaveRecordController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SettingController;
@@ -76,3 +77,6 @@ Route::middleware('jwt.verify')
 
 Route::middleware('jwt.verify')
    ->resource('setting', SettingController::class);
+
+Route::middleware('jwt.verify')
+   ->resource('on-leave-record', OnLeaveRecordController::class);

@@ -26,11 +26,6 @@ class DatabaseSeeder extends Seeder
          'code' => 'EMP',
       ]);
 
-      WorkSchedule::query()->insert([
-         'clock_in' => '08:00:00',
-         'clock_out' => '17:00:00'
-      ]);
-
       // \App\Models\User::factory(10)->create();
 
       // \App\Models\User::factory()->create([
