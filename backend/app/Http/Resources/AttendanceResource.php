@@ -26,6 +26,8 @@ class AttendanceResource extends JsonResource
             'note' => $this->note,
 
             'status' => $this->status,
+
+            'type' => $this->type,
         ];
     }
 }

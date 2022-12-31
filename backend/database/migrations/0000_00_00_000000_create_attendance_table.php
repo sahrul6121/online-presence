@@ -27,7 +27,7 @@ return new class extends Migration
 
          $table->enum('status', ['ON_TIME', 'LATE'])->nullable();
 
-         $table->enum('type', ['NORMAL ', 'OVERTIME'])->nullable();
+         $table->enum('type', ['NORMAL ', 'OVER_TIME'])->nullable();
 
          $table->timestamps();
 

@@ -1,21 +1,21 @@
 <template>
   <b-sidebar
-    id="edit-role-sidebar"
-    :visible="isEditRoleSidebarActive"
+    id="add-new-employee-sidebar"
+    :visible="isResetPasswordEmployeeSidebarActive"
     bg-variant="white"
     sidebar-class="sidebar-lg"
     shadow
     backdrop
     no-header
     right
-    @hidden="resetForm; roleData = null"
-    @change="(val) => $emit('update:is-edit-role-sidebar-active', val)"
+    @hidden="resetForm"
+    @change="(val) => $emit('update:is-reset-password-employee-sidebar-active', val)"
   >
     <template #default="{ hide }">
       <!-- Header -->
       <div class="d-flex justify-content-between align-items-center content-sidebar-header px-2 py-1">
         <h5 class="mb-0">
-          Edit Role
+          Reset Password
         </h5>
 
         <feather-icon
@@ -38,44 +38,21 @@
           @submit.prevent="handleSubmit(onSubmit)"
           @reset.prevent="resetForm"
         >
-
-          <!-- Name -->
+          <!-- Password -->
           <validation-provider
             #default="validationContext"
-            name="Name"
+            name="New Password"
             rules="required"
           >
             <b-form-group
-              label="Name"
-              label-for="name"
+              label="Password"
+              label-for="password"
             >
               <b-form-input
-                id="full-name"
-                v-model="roleData.name"
+                id="password"
+                v-model="employeeData.password"
+                type="password"
                 autofocus
-                :state="getValidationState(validationContext)"
-                trim
-              />
-
-              <b-form-invalid-feedback>
-                {{ validationContext.errors[0] }}
-              </b-form-invalid-feedback>
-            </b-form-group>
-          </validation-provider>
-
-          <!-- Code -->
-          <validation-provider
-            #default="validationContext"
-            name="Code"
-            rules="required|alpha-num"
-          >
-            <b-form-group
-              label="Code"
-              label-for="code"
-            >
-              <b-form-input
-                id="code"
-                v-model="roleData.code"
                 :state="getValidationState(validationContext)"
                 trim
               />
@@ -94,7 +71,7 @@
               class="mr-2"
               type="submit"
             >
-              Update
+              Save
             </b-button>
             <b-button
               v-ripple.400="'rgba(186, 191, 199, 0.15)'"
@@ -141,15 +118,19 @@ export default {
     Ripple,
   },
   model: {
-    prop: 'isEditRoleSidebarActive',
-    event: 'update:is-edit-role-sidebar-active',
+    prop: 'isResetPasswordEmployeeSidebarActive',
+    event: 'update:is-reset-password-employee-sidebar-active',
   },
   props: {
-    isEditRoleSidebarActive: {
+    isResetPasswordEmployeeSidebarActive: {
       type: Boolean,
       required: true,
     },
-    role: {
+    employeeOptions: {
+      type: Array,
+      required: true,
+    },
+    employee: {
       type: Object,
       required: true,
     },
@@ -163,30 +144,28 @@ export default {
     }
   },
   setup(props, { emit }) {
-    const blankRoleData = {
-      name: props.role.name ?? '',
-      code: props.role.code ?? '',
+    const blankEmployeeData = {
+      password: '',
     }
 
-    const roleData = ref(JSON.parse(JSON.stringify(blankRoleData)))
+    const employeeData = ref(JSON.parse(JSON.stringify(blankEmployeeData)))
 
-    watch(() => props.role, selection => {
-      roleData.value = {
+    watch(() => props.employee, selection => {
+      employeeData.value = {
         id: selection.id ?? '',
-        name: selection.name ?? '',
-        code: selection.code ?? '',
+        password: '',
       }
     }, { deep: true })
 
-    const resetRoleData = () => {
-      roleData.value = JSON.parse(JSON.stringify(blankRoleData))
+    const resetEmployeeData = () => {
+      employeeData.value = JSON.parse(JSON.stringify(blankEmployeeData))
     }
 
     const onSubmit = () => {
-      store.dispatch('app-role/updateRole', roleData.value)
+      store.dispatch('app-employee/resetPassword', employeeData.value)
         .then(() => {
           emit('refetch-data')
-          emit('update:is-edit-role-sidebar-active', false)
+          emit('update:is-reset-password-employee-sidebar-active', false)
         })
     }
 
@@ -194,10 +173,10 @@ export default {
       refFormObserver,
       getValidationState,
       resetForm,
-    } = formValidation(resetRoleData)
+    } = formValidation(resetEmployeeData)
 
     return {
-      roleData,
+      employeeData,
       onSubmit,
 
       refFormObserver,
@@ -211,7 +190,7 @@ export default {
 <style lang="scss">
 @import '@core/scss/vue/libs/vue-select.scss';
 
-#edit-role-sidebar {
+#add-new-employee-sidebar {
   .vs__dropdown-menu {
     max-height: 200px !important;
   }

@@ -12,7 +12,7 @@ use Illuminate\Foundation\Http\FormRequest;
  * @property integer $user_id
  * @property string $date_in
  * @property string $note
- * @property string $status
+ * @property string $type
  */
 class CreateAttendanceRequest extends FormRequest
 {
@@ -37,7 +37,7 @@ class CreateAttendanceRequest extends FormRequest
 
             'note' => [],
 
-            'status' => ['required', 'in:ON_TIME,LATE'],
+            'type' => ['required', 'in:NORMAL,OVER_TIME'],
 
         ];
     }
