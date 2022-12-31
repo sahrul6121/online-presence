@@ -8,13 +8,13 @@
       You have won gold medal
     </b-card-text>
     <h3 class="mb-75 mt-2 pt-50">
-      <b-link>${{ kFormatter(data.saleToday) }}</b-link>
+      <b-link></b-link>
     </h3>
     <b-button
       v-ripple.400="'rgba(255, 255, 255, 0.15)'"
       variant="primary"
     >
-      View Sales
+      Welcome
     </b-button>
     <b-img
       :src="require('@/assets/images/illustration/badge.svg')"
