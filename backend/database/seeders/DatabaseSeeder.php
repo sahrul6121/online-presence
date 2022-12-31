@@ -15,26 +15,26 @@ class DatabaseSeeder extends Seeder
     */
    public function run()
    {
-       Role::query()->insert([
-           'name' => 'Human Resource Division',
-           'code' => 'HRD',
-       ]);
+      Role::query()->insert([
+         'name' => 'Human Resource Division',
+         'code' => 'HRD',
+      ]);
 
-       Role::query()->insert([
-           'name' => 'Employee',
-           'code' => 'EMP',
-       ]);
+      Role::query()->insert([
+         'name' => 'Employee',
+         'code' => 'EMP',
+      ]);
 
-       //      WorkSchedule::query()->insert([
-       //         'clock_in' => '08:00:00',
-       //         'clock_out' => '17:00:00'
-       //      ]);
+      //      WorkSchedule::query()->insert([
+      //         'clock_in' => '08:00:00',
+      //         'clock_out' => '17:00:00'
+      //      ]);
 
-       // \App\Models\User::factory(10)->create();
+      // \App\Models\User::factory(10)->create();
 
-       // \App\Models\User::factory()->create([
-       //     'name' => 'Test User',
-       //     'email' => 'test@example.com',
-       // ]);
+      // \App\Models\User::factory()->create([
+      //     'name' => 'Test User',
+      //     'email' => 'test@example.com',
+      // ]);
    }
 }

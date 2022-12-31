@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AttendanceResource extends JsonResource
+class OnLeaveRecordResource extends JsonResource
 {
    /**
     * Transform the resource into an array.
@@ -19,15 +19,20 @@ class AttendanceResource extends JsonResource
 
          'user' => new UserResource($this->user),
 
-         'date_in' => $this->date_in,
+         'title' => $this->title,
 
-         'date_out' => $this->date_out,
+         'start' => $this->start,
 
-         'note' => $this->note,
+         'end' => $this->end,
 
-         'status' => $this->status,
+         'all_day' => $this->all_day,
 
-         'type' => $this->type,
+         'extendedProps' => [
+
+            'calender' => $this->calender,
+
+            'description' => $this->description,
+         ]
       ];
    }
 }
