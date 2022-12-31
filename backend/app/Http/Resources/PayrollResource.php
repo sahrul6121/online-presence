@@ -15,9 +15,19 @@ class PayrollResource extends JsonResource
    public function toArray($request)
    {
       return [
-         'id' => $this->id,
-         'user' => new UserResource($this->user),
-         'salary' => $this->salary,
+          'id' => $this->id,
+          'user' => new UserResource($this->user),
+          'date' => $this->date,
+          'sub_total' => $this->sub_total,
+          'tax' => $this->tax,
+          'total' => $this->total,
+          'company' => $this->company,
+          'company_address' => $this->company_address,
+          'company_phone' => $this->company_phone,
+          'bank' => $this->bank,
+          'bank_account' => $this->bank_account,
+          'country' => $this->country,
+          'items' => PayrollItemResource::collection($this->items),
       ];
    }
 }

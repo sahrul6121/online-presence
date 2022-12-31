@@ -226,6 +226,54 @@
             </b-form-group>
           </validation-provider>
 
+          <!-- Name -->
+          <validation-provider
+            #default="validationContext"
+            name="Bank"
+            rules="required"
+          >
+            <b-form-group
+              label="Bank"
+              label-for="bank"
+            >
+              <b-form-input
+                id="bank"
+                v-model="employeeData.bank"
+                autofocus
+                :state="getValidationState(validationContext)"
+                trim
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
+          <!-- Name -->
+          <validation-provider
+            #default="validationContext"
+            name="Bank Account"
+            rules="required"
+          >
+            <b-form-group
+              label="Bank Account"
+              label-for="bank_account"
+            >
+              <b-form-input
+                id="bank_account"
+                v-model="employeeData.bank_account"
+                autofocus
+                :state="getValidationState(validationContext)"
+                trim
+              />
+
+              <b-form-invalid-feedback>
+                {{ validationContext.errors[0] }}
+              </b-form-invalid-feedback>
+            </b-form-group>
+          </validation-provider>
+
           <!-- Form Actions -->
           <div class="d-flex mt-2">
             <b-button
@@ -335,6 +383,8 @@ export default {
         join_date: selection.join_date ?? '',
         base_salary: selection.base_salary ?? '',
         gender: selection.gender ?? '',
+        bank: selection.bank ?? '',
+        bank_account: selection.bank_account ?? '',
       }
     }, { deep: true })
 

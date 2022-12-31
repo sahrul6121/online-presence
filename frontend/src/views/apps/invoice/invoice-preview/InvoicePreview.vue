@@ -46,17 +46,17 @@
                 <div class="logo-wrapper">
                   <logo />
                   <h3 class="text-primary invoice-logo">
-                    Vuexy
+                    E-Presence
                   </h3>
                 </div>
                 <p class="card-text mb-25">
-                  Office 149, 450 South Brand Brooklyn
+                  {{ invoiceData.company }}
                 </p>
                 <p class="card-text mb-25">
-                  San Diego County, CA 91905, USA
+                  {{ invoiceData.company_address }}
                 </p>
                 <p class="card-text mb-0">
-                  +1 (123) 456 7891, +44 (876) 543 2198
+                  {{ invoiceData.company_phone }}
                 </p>
               </div>
 
@@ -68,18 +68,10 @@
                 </h4>
                 <div class="invoice-date-wrapper">
                   <p class="invoice-date-title">
-                    Date Issued:
+                    Date :
                   </p>
                   <p class="invoice-date">
-                    {{ invoiceData.issuedDate }}
-                  </p>
-                </div>
-                <div class="invoice-date-wrapper">
-                  <p class="invoice-date-title">
-                    Due Date:
-                  </p>
-                  <p class="invoice-date">
-                    {{ invoiceData.dueDate }}
+                    {{ invoiceData.date }}
                   </p>
                 </div>
               </div>
@@ -91,7 +83,7 @@
 
           <!-- Invoice Client & Payment Details -->
           <b-card-body
-            v-if="invoiceData.client"
+            v-if="invoiceData.user"
             class="invoice-padding pt-0"
           >
             <b-row class="invoice-spacing">
@@ -106,19 +98,16 @@
                   Invoice To:
                 </h6>
                 <h6 class="mb-25">
-                  {{ invoiceData.client.name }}
+                  {{ invoiceData.user.name }}
                 </h6>
                 <p class="card-text mb-25">
-                  {{ invoiceData.client.company }}
+                  {{ invoiceData.company }}
                 </p>
                 <p class="card-text mb-25">
-                  {{ invoiceData.client.address }}, {{ invoiceData.client.country }}
-                </p>
-                <p class="card-text mb-25">
-                  {{ invoiceData.client.contact }}
+                  {{ invoiceData.user.address }}, {{ invoiceData.country }}
                 </p>
                 <p class="card-text mb-0">
-                  {{ invoiceData.client.companyEmail }}
+                  {{ invoiceData.user.email }}
                 </p>
               </b-col>
 
@@ -136,33 +125,27 @@
                     <tbody>
                       <tr>
                         <td class="pr-1">
-                          Total Due:
+                          Sub Total:
                         </td>
-                        <td><span class="font-weight-bold">{{ paymentDetails.totalDue }}</span></td>
+                        <td><span class="font-weight-bold">{{ invoiceData.sub_total }}</span></td>
                       </tr>
                       <tr>
                         <td class="pr-1">
                           Bank name:
                         </td>
-                        <td>{{ paymentDetails.bankName }}</td>
+                        <td>{{ invoiceData.bank }}</td>
                       </tr>
                       <tr>
                         <td class="pr-1">
                           Country:
                         </td>
-                        <td>{{ paymentDetails.country }}</td>
+                        <td>{{ invoiceData.country }}</td>
                       </tr>
                       <tr>
                         <td class="pr-1">
-                          IBAN:
+                          Account:
                         </td>
-                        <td>{{ paymentDetails.iban }}</td>
-                      </tr>
-                      <tr>
-                        <td class="pr-1">
-                          SWIFT code:
-                        </td>
-                        <td>{{ paymentDetails.swiftCode }}</td>
+                        <td>{{ invoiceData.bank_account }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -174,15 +157,27 @@
           <!-- Invoice Description: Table -->
           <b-table-lite
             responsive
-            :items="invoiceDescription"
-            :fields="['taskDescription', 'rate', 'hours', 'total']"
+            :items="invoiceData.items"
+            :fields="['taskDescription', 'rate', 'hours', 'day', 'total']"
           >
             <template #cell(taskDescription)="data">
               <b-card-text class="font-weight-bold mb-25">
-                {{ data.item.taskTitle }}
+                {{ data.item.subject }}
               </b-card-text>
               <b-card-text class="text-nowrap">
-                {{ data.item.taskDescription }}
+                {{ data.item.description }}
+              </b-card-text>
+            </template>
+
+            <template #cell(hours)="data">
+              <b-card-text class="font-weight-bold mb-25">
+                {{ data.value ? data.value : 0 }}
+              </b-card-text>
+            </template>
+
+            <template #cell(day)="data">
+              <b-card-text class="font-weight-bold mb-25">
+                {{ data.value ? data.value : 0 }}
               </b-card-text>
             </template>
           </b-table-lite>
@@ -199,10 +194,6 @@
                 order="2"
                 order-md="1"
               >
-                <b-card-text class="mb-0">
-                  <span class="font-weight-bold">Salesperson:</span>
-                  <span class="ml-75">Alfie Solomons</span>
-                </b-card-text>
               </b-col>
 
               <!-- Col: Total -->
@@ -216,26 +207,10 @@
                 <div class="invoice-total-wrapper">
                   <div class="invoice-total-item">
                     <p class="invoice-total-title">
-                      Subtotal:
-                    </p>
-                    <p class="invoice-total-amount">
-                      $1800
-                    </p>
-                  </div>
-                  <div class="invoice-total-item">
-                    <p class="invoice-total-title">
-                      Discount:
-                    </p>
-                    <p class="invoice-total-amount">
-                      $28
-                    </p>
-                  </div>
-                  <div class="invoice-total-item">
-                    <p class="invoice-total-title">
                       Tax:
                     </p>
                     <p class="invoice-total-amount">
-                      21%
+                      {{ invoiceData.tax }}
                     </p>
                   </div>
                   <hr class="my-50">
@@ -244,7 +219,7 @@
                       Total:
                     </p>
                     <p class="invoice-total-amount">
-                      $1690
+                      Rp. {{ invoiceData.total }}
                     </p>
                   </div>
                 </div>
@@ -258,8 +233,7 @@
           <!-- Note -->
           <b-card-body class="invoice-padding pt-0">
             <span class="font-weight-bold">Note: </span>
-            <span>It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance
-              projects. Thank You!</span>
+            <span>Salary paid per mont</span>
           </b-card-body>
         </b-card>
       </b-col>
@@ -272,27 +246,6 @@
         class="invoice-actions"
       >
         <b-card>
-
-          <!-- Button: Send Invoice -->
-          <b-button
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-            v-b-toggle.sidebar-send-invoice
-            variant="primary"
-            class="mb-75"
-            block
-          >
-            Send Invoice
-          </b-button>
-
-          <!-- Button: DOwnload -->
-          <b-button
-            v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-            variant="outline-secondary"
-            class="mb-75"
-            block
-          >
-            Download
-          </b-button>
 
           <!-- Button: Print -->
           <b-button
@@ -308,7 +261,7 @@
           <!-- Button: Edit -->
           <b-button
             v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-            variant="outline-secondary"
+            variant="outline-success"
             class="mb-75"
             block
             :to="{ name: 'apps-invoice-edit', params: { id: $route.params.id } }"
@@ -316,15 +269,15 @@
             Edit
           </b-button>
 
-          <!-- Button: Add Payment -->
+          <!-- Button: Edit -->
           <b-button
-            v-b-toggle.sidebar-invoice-add-payment
-            v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-            variant="success"
+            v-ripple.400="'rgba(186, 191, 199, 0.15)'"
+            variant="outline-danger"
             class="mb-75"
             block
+            :to="{ name: 'apps-invoice-list' }"
           >
-            Add Payment
+            To List
           </b-button>
         </b-card>
       </b-col>
@@ -403,8 +356,9 @@ export default {
 
     store.dispatch('app-invoice/fetchInvoice', { id: router.currentRoute.params.id })
       .then(response => {
-        invoiceData.value = response.data.invoice
-        paymentDetails.value = response.data.paymentDetails
+        invoiceData.value = response.data.data
+
+        paymentDetails.value = null
       })
       .catch(error => {
         if (error.response.status === 404) {
@@ -422,6 +376,11 @@ export default {
       invoiceDescription,
       printInvoice,
     }
+  },
+  methods: {
+    backToList() {
+      this.$router.push({ name: 'apps-invoice-list' })
+    },
   },
 }
 </script>

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payroll extends Model
 {
-   use HasFactory;
+   use HasFactory, SoftDeletes;
 
    protected $table = 'payrolls';
 
@@ -33,17 +34,35 @@ class Payroll extends Model
    public $timestamps = true;
 
    protected $fillable = [
-      'id',
-      'user_id',
-      'salary'
+       'id',
+       'user_id',
+       'date',
+       'sub_total',
+       'tax',
+       'total',
+       'company',
+       'company_address',
+       'company_phone',
+       'bank',
+       'bank_account',
+       'country',
    ];
 
    public static function keys(): array
    {
       return [
-         'id',
-         'user_id',
-         'salary'
+          'id',
+          'user_id',
+          'date',
+          'sub_total',
+          'tax',
+          'total',
+          'company',
+          'company_address',
+          'company_phone',
+          'bank',
+          'bank_account',
+          'country',
       ];
    }
 
@@ -51,4 +70,9 @@ class Payroll extends Model
    {
       return $this->hasOne(User::class, 'id', 'user_id');
    }
+
+    public function items()
+    {
+        return $this->hasMany(PayrollItem::class);
+    }
 }

@@ -24,6 +24,8 @@ class UserResource extends JsonResource
             'gender' => $this->gender,
             'join_date' => $this->join_date,
             'base_salary' => $this->base_salary,
+            'bank' => $this->bank,
+            'bank_account' => $this->bank_account,
         ];
     }
 }

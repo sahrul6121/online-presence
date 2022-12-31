@@ -15,10 +15,10 @@ export default function useInvoicesList() {
   const tableColumns = [
     { key: 'id', label: '#', sortable: true },
     { key: 'invoiceStatus', sortable: true },
-    { key: 'client', sortable: true },
-    { key: 'total', sortable: true, formatter: val => `$${val}` },
-    { key: 'issuedDate', sortable: true },
-    { key: 'balance', sortable: true },
+    { key: 'user', sortable: true },
+    { key: 'date', sortable: true },
+    { key: 'bank', sortable: true },
+    { key: 'total', sortable: true, formatter: val => `Rp.${val}` },
     { key: 'actions' },
   ]
   const perPage = ref(10)
@@ -58,10 +58,11 @@ export default function useInvoicesList() {
         status: statusFilter.value,
       })
       .then(response => {
-        const { invoices, total } = response.data
+        const resposeData = response.data
 
-        callback(invoices)
-        totalInvoices.value = total
+        callback(resposeData.data)
+
+        totalInvoices.value = resposeData.meta.total
       })
       .catch(() => {
         toast({

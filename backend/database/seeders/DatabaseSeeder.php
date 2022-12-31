@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Role;
-use App\Models\WorkSchedule;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -25,6 +24,11 @@ class DatabaseSeeder extends Seeder
          'name' => 'Employee',
          'code' => 'EMP',
       ]);
+
+      //      WorkSchedule::query()->insert([
+      //         'clock_in' => '08:00:00',
+      //         'clock_out' => '17:00:00'
+      //      ]);
 
       // \App\Models\User::factory(10)->create();
 

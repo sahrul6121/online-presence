@@ -32,6 +32,8 @@ class AuthController extends Controller
             'gender' => $request->gender,
             'join_date' => $request->join_date,
             'base_salary' => $request->base_salary,
+            'bank_account' => $request->bank_account,
+            'bank' => $request->bank,
         ]);
 
         return response()->json([
