@@ -220,7 +220,6 @@ export default [
     name: 'apps-invoice-edit',
     component: () => import('@/views/apps/invoice/invoice-edit/InvoiceEdit.vue'),
   },
-
    // *===============================================---*
    // *--------- SETTING ---- ---------------------------------------*
    // *===============================================---*
@@ -229,4 +228,21 @@ export default [
       name: 'apps-settings',
       component: () => import('@/views/apps/setting/Setting.vue'),
    },
+  {
+    path: '/apps/presence',
+    name: 'apps-presence',
+    component: () => import('@/views/apps/presence/presence-list/Presence.vue'),
+    meta: {
+      pageTitle: 'Presence',
+      breadcrumb: [
+        {
+          text: 'Pages',
+        },
+        {
+          text: 'Presence',
+          active: true,
+        },
+      ],
+    },
+  },
 ]

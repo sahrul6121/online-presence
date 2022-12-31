@@ -48,6 +48,7 @@
         variant="link"
         no-caret
         toggle-class="p-0"
+        hidden
         right
       >
 

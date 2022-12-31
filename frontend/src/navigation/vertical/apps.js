@@ -8,6 +8,11 @@ export default [
     icon: 'CheckSquareIcon',
   },
   {
+    title: 'Presence',
+    route: 'apps-presence',
+    icon: 'ClipboardIcon',
+  },
+  {
     title: 'Calendar',
     route: 'apps-calendar',
     icon: 'CalendarIcon',
