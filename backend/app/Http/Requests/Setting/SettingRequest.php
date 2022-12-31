@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\WorkSchedule;
+namespace App\Http\Requests\Setting;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class WorkScheduleRequest extends FormRequest
+class SettingRequest extends FormRequest
 {
    /**
     * Determine if the user is authorized to make this request.

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\WorkSchedule;
+namespace App\Http\Requests\Setting;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateWorkScheduleRequest extends FormRequest
+class UpdateSettingRequest extends FormRequest
 {
    /**
     * Determine if the user is authorized to make this request.
@@ -24,8 +24,8 @@ class UpdateWorkScheduleRequest extends FormRequest
    public function rules()
    {
       return [
-         'clock_in' => [],
-         'clock_out' => []
+         'code' => [],
+         'value' => []
       ];
    }
 }

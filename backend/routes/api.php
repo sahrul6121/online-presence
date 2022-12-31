@@ -4,6 +4,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\TimeSheetActivityController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkScheduleController;
@@ -74,4 +75,4 @@ Route::middleware('jwt.verify')
    ->resource('payroll', PayrollController::class);
 
 Route::middleware('jwt.verify')
-   ->resource('work-schedule', WorkScheduleController::class);
+   ->resource('setting', SettingController::class);
