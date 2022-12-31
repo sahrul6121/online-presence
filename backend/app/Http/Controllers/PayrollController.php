@@ -146,7 +146,7 @@ class PayrollController extends Controller
                 'subject' => 'Lembur',
                 'description' => 'Uang untuk bayaran lembur.',
                 'rate' => $this->overTimeFee,
-                'hour' => $overTime->total_hour,
+                'hours' => $overTime->total_hour,
                 'total' => $overTime->total_fee,
             ];
         }
