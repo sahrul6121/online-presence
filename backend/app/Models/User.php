@@ -74,7 +74,7 @@ class User extends Authenticated implements JWTSubject
     }
 
     public function role(): HasOne {
-        return $this->hasOne(Role::class, 'id');
+        return $this->hasOne(Role::class, 'id', 'role_id');
     }
 
     public function payrolls(): HasMany {
