@@ -19,20 +19,15 @@ class AttendanceResource extends JsonResource
 
          'user' => new UserResource($this->user),
 
-         'title' => $this->title,
+         'date_in' => $this->date_in,
 
-         'start' => $this->start,
+         'date_out' => $this->date_out,
 
-         'end' => $this->end,
+         'note' => $this->note,
 
-         'all_day' => $this->all_day,
+         'status' => $this->status,
 
-         'extendedProps' => [
-
-            'calender' => $this->calender,
-
-            'description' => $this->description,
-         ]
+         'type' => $this->type,
       ];
    }
 }
