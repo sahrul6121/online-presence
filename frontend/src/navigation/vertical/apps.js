@@ -54,4 +54,9 @@ export default [
       },
     ],
   },
+  {
+   title: 'Setting',
+   icon: 'SettingsIcon',
+   route: 'apps-settings',
+  },
 ]
